@@ -44,8 +44,8 @@ dev = [
 [project.urls]
 Homepage = "https://ogunscan.dev"
 Documentation = "https://ogunscan.dev/docs"
-Repository = "https://github.com/ten30studio/ogunscan"
-Issues = "https://github.com/ten30studio/ogunscan/issues"
+Repository = "https://github.com/Ten30studio/ogunscan"
+Issues = "https://github.com/Ten30studio/ogunscan/issues"
 
 [project.scripts]
 ogunscan = "scanner:cli"

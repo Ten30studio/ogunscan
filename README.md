@@ -123,7 +123,7 @@ that target them.
 
 ## Contributing
 
-Issues and PRs welcome at [github.com/ten30studio/ogunscan](https://github.com/ten30studio/ogunscan).
+Issues and PRs welcome at [github.com/Ten30studio/ogunscan](https://github.com/Ten30studio/ogunscan).
 
 ## License
 

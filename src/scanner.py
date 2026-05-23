@@ -462,7 +462,7 @@ def cli():
     parser = argparse.ArgumentParser(
         prog='ogunscan',
         description='⚔️  OgunScan — MCP Server Security Scanner by Ten30 Studio',
-        epilog='Docs: https://ogunscan.dev/docs · Issues: https://github.com/ten30studio/ogunscan/issues',
+        epilog='Docs: https://ogunscan.dev/docs · Issues: https://github.com/Ten30studio/ogunscan/issues',
     )
     parser.add_argument('--version', action='version', version=f'OgunScan {__version__}')
     sub = parser.add_subparsers(dest='cmd', required=True, metavar='<command>')
