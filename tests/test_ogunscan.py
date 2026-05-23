@@ -3,7 +3,7 @@ import json, sys, tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
-from scanner import OgunScanner, Severity
+from ogunscan import OgunScanner, Severity
 
 scanner = OgunScanner()
 

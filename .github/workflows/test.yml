@@ -31,7 +31,7 @@ jobs:
       - name: Run tests
         run: |
           pytest tests/ -v
-          python tests/test_scanner.py
+          python tests/test_ogunscan.py
 
       - name: Smoke-test CLI
         run: |

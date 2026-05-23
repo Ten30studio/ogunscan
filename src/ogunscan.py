@@ -356,7 +356,7 @@ def format_report(result: ScanResult, color: bool = True) -> str:
     return '\n'.join(lines)
 
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 # Rule catalogue (kept here as the single source of truth for `ogunscan rules`)
 RULES = [

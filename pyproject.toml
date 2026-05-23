@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ogunscan"
-version = "0.1.1"
+version = "0.1.2"
 description = "MCP server security scanner. Find vulnerabilities before attackers do."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -48,11 +48,11 @@ Repository = "https://github.com/Ten30studio/ogunscan"
 Issues = "https://github.com/Ten30studio/ogunscan/issues"
 
 [project.scripts]
-ogunscan = "scanner:cli"
+ogunscan = "ogunscan:cli"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
-py-modules = ["scanner"]
+py-modules = ["ogunscan"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
