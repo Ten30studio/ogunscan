@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OgunScan — MCP Security Scanner</title>
+  <meta name="description" content="Scan your MCP server configs for prompt injection, exposed credentials, and server-side vulnerabilities. Free CLI. Built by Ten30 Studios." />
+  <meta property="og:title" content="OgunScan — MCP Security Scanner" />
+  <meta property="og:description" content="Find vulnerabilities in your MCP configs before attackers do. Free CLI. $9/mo for continuous monitoring." />
+  <meta property="og:type" content="website" />
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --border: #222222;
+      --gold: #c9a84c;
+      --gold-dim: #8b6f2e;
+      --text: #e8e8e8;
+      --muted: #888;
+      --red: #e05252;
+      --green: #52c47a;
+      --cyan: #52b8c4;
+      --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-weight: 700; font-size: 1.1rem; color: var(--gold); letter-spacing: 0.05em; }
+    .logo span { color: var(--text); }
+    nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; margin-left: 1.5rem; }
+    nav a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--gold);
+      color: #000 !important;
+      padding: 0.4rem 1rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* HERO */
+    .hero {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 5rem 2rem 3rem;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: #1a1200;
+      border: 1px solid var(--gold-dim);
+      color: var(--gold);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+    }
+    h1 em { color: var(--gold); font-style: normal; }
+    .subtitle {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+    }
+    .cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold);
+      color: #000;
+      font-weight: 700;
+      padding: 0.75rem 1.75rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      font-weight: 600;
+      padding: 0.75rem 1.75rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .btn-secondary:hover { border-color: var(--muted); }
+
+    /* TERMINAL */
+    .terminal-wrap {
+      max-width: 680px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+    .terminal {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .term-bar {
+      background: #1a1a1a;
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ff5f56; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #27c93f; }
+    .term-body { padding: 1.25rem 1.5rem; font-family: var(--mono); font-size: 0.85rem; line-height: 1.8; }
+    .t-dim { color: var(--muted); }
+    .t-cmd { color: var(--gold); }
+    .t-ok { color: var(--green); }
+    .t-err { color: var(--red); }
+    .t-info { color: var(--cyan); }
+
+    /* CHECKS */
+    .checks {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+    .section-label {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .checks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .check-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+    .check-card .sev {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .sev-critical { color: var(--red); }
+    .sev-high { color: #e08052; }
+    .sev-medium { color: #e0c052; }
+    .check-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .check-card p { font-size: 0.82rem; color: var(--muted); }
+
+    /* PRICING */
+    .pricing {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    @media (max-width: 520px) { .pricing-grid { grid-template-columns: 1fr; } }
+    .price-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+    }
+    .price-card.featured {
+      border-color: var(--gold-dim);
+      background: #0f0e08;
+    }
+    .plan-name { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+    .plan-price { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.25rem; }
+    .plan-price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+    .plan-features { list-style: none; margin: 1.25rem 0 1.75rem; }
+    .plan-features li { font-size: 0.88rem; color: var(--muted); padding: 0.3rem 0; padding-left: 1.25rem; position: relative; }
+    .plan-features li::before { content: '✓'; color: var(--green); position: absolute; left: 0; }
+    .plan-cta {
+      display: block;
+      text-align: center;
+      padding: 0.7rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+    }
+    .plan-cta-free { border: 1px solid var(--border); color: var(--text); }
+    .plan-cta-paid { background: var(--gold); color: #000; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); }
+    .ogun-credit {
+      margin-top: 0.5rem;
+      font-size: 0.7rem;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">⚔️ Ogun<span>Scan</span></div>
+  <div>
+    <a href="#checks">Checks</a>
+    <a href="#pricing">Pricing</a>
+    <a href="https://github.com/ten30studio/ogunscan">GitHub</a>
+    <a href="#pricing" class="nav-cta">Get Shield →</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="badge">MCP Security · Free CLI</div>
+  <h1>Scan your MCP configs<br />before attackers <em>do.</em></h1>
+  <p class="subtitle">
+    OgunScan audits MCP server configurations for prompt injection, exposed credentials, and server-side vulnerabilities — in seconds.
+  </p>
+  <div class="cta-group">
+    <a href="#install" class="btn-primary">Install free CLI →</a>
+    <a href="#pricing" class="btn-secondary">Shield — $9/mo</a>
+  </div>
+</section>
+
+<div class="terminal-wrap" id="install">
+  <div class="terminal">
+    <div class="term-bar">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+    </div>
+    <div class="term-body">
+      <div><span class="t-dim">$ </span><span class="t-cmd">pip install ogunscan</span></div>
+      <div><span class="t-dim">$ </span><span class="t-cmd">ogunscan scan ~/.cursor/mcp.json</span></div>
+      <br />
+      <div><span class="t-info">⚔️  OgunScan — MCP Security Report</span></div>
+      <div><span class="t-dim">   Target: ~/.cursor/mcp.json</span></div>
+      <div><span class="t-dim">   Servers: 4 | Tools: 12</span></div>
+      <div><span class="t-dim">   Findings: 3 total</span></div>
+      <br />
+      <div><span class="t-err">   CRITICAL: 2</span>  <span class="t-dim">HIGH: 1  MEDIUM: 0</span></div>
+      <br />
+      <div><span class="t-err">   [CRITICAL] OGN-200 — Hardcoded credential in env</span></div>
+      <div><span class="t-dim">   Location: server 'github-mcp' → env.GITHUB_TOKEN</span></div>
+      <div><span class="t-dim">   Fix: Move to environment variables or secrets manager.</span></div>
+      <br />
+      <div><span class="t-err">   [CRITICAL] OGN-300 — Prompt injection in tool description</span></div>
+      <div><span class="t-dim">   Location: server 'assistant' → tools.summarize</span></div>
+      <div><span class="t-dim">   Evidence: "ignore previous instructions and..."</span></div>
+      <br />
+      <div><span class="t-ok">   [HIGH] OGN-500 — Unverified package-sourced server</span></div>
+      <div><span class="t-dim">   Fix: Pin exact package versions (e.g., npx pkg@1.2.3)</span></div>
+    </div>
+  </div>
+</div>
+
+<section class="checks" id="checks">
+  <div class="section-label">What OgunScan catches</div>
+  <div class="checks-grid">
+    <div class="check-card">
+      <div class="sev sev-critical">Critical</div>
+      <h3>Prompt Injection</h3>
+      <p>Detects malicious instructions embedded in tool descriptions that hijack AI behavior.</p>
+    </div>
+    <div class="check-card">
+      <div class="sev sev-critical">Critical</div>
+      <h3>Exposed Credentials</h3>
+      <p>Scans for hardcoded API keys, tokens, and secrets in env vars and command args.</p>
+    </div>
+    <div class="check-card">
+      <div class="sev sev-critical">Critical</div>
+      <h3>Unencrypted Connections</h3>
+      <p>Flags MCP servers using HTTP instead of HTTPS for remote connections.</p>
+    </div>
+    <div class="check-card">
+      <div class="sev sev-high">High</div>
+      <h3>Suspicious Server URLs</h3>
+      <p>Identifies ngrok tunnels, IP addresses, free-TLD domains, and Tor services.</p>
+    </div>
+    <div class="check-card">
+      <div class="sev sev-high">High</div>
+      <h3>Dangerous Permissions</h3>
+      <p>Warns on overly-permissive scopes like shell_exec, file_write, and admin.</p>
+    </div>
+    <div class="check-card">
+      <div class="sev sev-medium">Medium</div>
+      <h3>Supply Chain Risk</h3>
+      <p>Detects unpinned npx/uvx packages vulnerable to dependency hijacking attacks.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="section-label">Pricing</div>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">$0</div>
+      <ul class="plan-features">
+        <li>Single-file CLI scan</li>
+        <li>All 6 vulnerability checks</li>
+        <li>JSON output for scripting</li>
+        <li>Open source on GitHub</li>
+      </ul>
+      <a href="https://github.com/ten30studio/ogunscan" class="plan-cta plan-cta-free">Install CLI →</a>
+    </div>
+    <div class="price-card featured">
+      <div class="plan-name" style="color: var(--gold);">Shield — $9/mo</div>
+      <div class="plan-price">$9<span>/month</span></div>
+      <ul class="plan-features">
+        <li>Everything in Free</li>
+        <li>Continuous monitoring</li>
+        <li>CI/CD integration (GitHub Actions)</li>
+        <li>Private server scanning</li>
+        <li>Email + Slack alerts</li>
+        <li>New vulnerability signatures</li>
+      </ul>
+      <a href="https://gumroad.com/l/ogunscan-shield" class="plan-cta plan-cta-paid">Get Shield →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Built by <a href="https://ten30studio.com">Ten30 Studios</a> · <a href="https://github.com/ten30studio/ogunscan">GitHub</a> · <a href="mailto:admin@ten30studio.com">Contact</a></div>
+  <div class="ogun-credit">Named for Ogun — Yoruba orisha of iron, protection, and war. ⚔️</div>
+</footer>
+
+</body>
+</html>
