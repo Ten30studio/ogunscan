@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ogunscan"
+version = "0.1.0"
+description = "MCP server security scanner. Find vulnerabilities before attackers do."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+  { name = "Ten30 Studio", email = "admin@ten30studio.com" },
+]
+keywords = ["mcp", "security", "scanner", "ai", "agents", "claude", "cursor", "prompt-injection"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.0",
+  "build>=1.0",
+  "twine>=4.0",
+]
+
+[project.urls]
+Homepage = "https://ogunscan.dev"
+Documentation = "https://ogunscan.dev/docs"
+Repository = "https://github.com/ten30studio/ogunscan"
+Issues = "https://github.com/ten30studio/ogunscan/issues"
+
+[project.scripts]
+ogunscan = "scanner:cli"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+py-modules = ["scanner"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v"
