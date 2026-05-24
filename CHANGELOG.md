@@ -7,6 +7,18 @@ versioning follows [SemVer](https://semver.org/).
 ## [Unreleased]
 
 ### Added (Shield internal — not on PyPI yet)
+- **Phase 4 license gate** — Gumroad license-key verification with 24h cache + offline tolerance.
+  - `ogunscan shield activate <license-key>` — verify with Gumroad, persist key (chmod 600), cache verification.
+  - `ogunscan shield deactivate` — stop daemon, remove key + cache.
+  - `ogunscan shield license [--refresh]` — show current status; `--refresh` bypasses 24h cache.
+  - `ogunscan shield start` gated by valid license; clear error + activation URL when missing.
+  - Stale-cache fallback when Gumroad unreachable: customer's daemon keeps running even during Gumroad outages — they paid for it.
+  - `OGUNSCAN_PRODUCT_ID` env var for the Gumroad product id (release wheel will bake in production value).
+  - 14 unit tests with mocked Gumroad API.
+- **Phase 3 alert channels** — Email (Gmail SMTP) + Slack (incoming webhook) notifiers.
+  - `EmailNotifier` (`notifiers/email.py`) — SMTP via stdlib; multipart MIME with HTML severity-badge cards + plain-text fallback; STARTTLS or implicit-TLS based on port; HTML-escapes finding fields to prevent injection. Reads `OGUNSCAN_SMTP_{HOST,PORT,USER,APP_PASS}` + `OGUNSCAN_ALERT_EMAIL`.
+  - `SlackNotifier` (`notifiers/slack.py`) — Block Kit message with severity color bar (CRITICAL=firebrick, HIGH=chocolate, MEDIUM=darkgoldenrod, LOW=steelblue) + header + fields + fix block + footer. Reads `OGUNSCAN_SLACK_WEBHOOK`. Defensive: rejects non-`hooks.slack.com` URLs.
+  - `auto_wire_from_env()` — daemon's default notifier list. Stdout always on; Email + Slack opt in based on env presence. 23 unit tests with mocked SMTP / urlopen.
 - **`ogunscan.shield` package** (file watcher + scheduled scan + state + history + CLI). Phase 2 of the OgunScan Shield $9/mo continuous-monitoring tier build.
 - New CLI subcommands: `ogunscan shield {add,remove,status,scan-now,logs,stop,start,install-launchd,uninstall-launchd}`. Hidden from free-tier users by the license gate (Phase 4); functional today via `python -m ogunscan.shield.daemon`.
 - `watchdog>=3.0` declared as optional `[shield]` extra in pyproject. Free CLI install (`pip install ogunscan`) remains zero-dep.

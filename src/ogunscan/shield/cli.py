@@ -15,7 +15,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from . import history, state
+from . import history, license as _license, state
 from .paths import pid_file
 
 
@@ -162,11 +162,17 @@ def cmd_shield_stop(args: argparse.Namespace) -> int:
 
 
 def cmd_shield_start(args: argparse.Namespace) -> int:
-    """Start the daemon in the foreground. Use launchd for unattended supervision."""
+    """Start the daemon in the foreground. Gated by a valid Shield license.
+    Use launchd for unattended supervision (see `install-launchd`)."""
     pid = _read_pid()
     if pid:
         print(f"Daemon already running (pid {pid}).", file=sys.stderr)
         return 1
+    status = _license.verify_license()
+    if not status.valid:
+        print(f"⚠️  {status.message}", file=sys.stderr)
+        return 2
+    print(f"✓ {status.message}")
     from .daemon import ShieldDaemon
     d = ShieldDaemon()
     d.start()
@@ -175,6 +181,57 @@ def cmd_shield_start(args: argparse.Namespace) -> int:
     finally:
         d.shutdown()
     return 0
+
+
+def cmd_shield_activate(args: argparse.Namespace) -> int:
+    """Verify a license key with Gumroad and persist it locally."""
+    key = args.key.strip()
+    if not key:
+        print("License key cannot be empty.", file=sys.stderr)
+        return 1
+    status = _license.verify_license(license_key=key, force_refresh=True)
+    if not status.valid:
+        print(f"⚠️  {status.message}", file=sys.stderr)
+        return 2
+    _license.write_license_key(key)
+    print(f"✓ License activated. {status.message}")
+    if status.purchase:
+        email = status.purchase.get("email", "")
+        sale_id = status.purchase.get("sale_id", "")
+        if email:
+            print(f"  Purchase: {email}{' · sale ' + sale_id if sale_id else ''}")
+    print()
+    print("Next steps:")
+    print("  ogunscan shield add ~/.cursor/mcp.json        # watch your MCP config")
+    print("  ogunscan shield install-launchd               # run unattended (macOS)")
+    print("  ogunscan shield start                         # or run in the foreground")
+    return 0
+
+
+def cmd_shield_deactivate(args: argparse.Namespace) -> int:
+    """Stop daemon (if running), then remove license key + cache."""
+    pid = _read_pid()
+    if pid:
+        _signal_daemon(signal.SIGTERM)
+        deadline = time.time() + 5.0
+        while time.time() < deadline and _read_pid():
+            time.sleep(0.2)
+    _license.clear_license()
+    print("✓ License removed. Shield daemon stopped (if it was running).")
+    return 0
+
+
+def cmd_shield_license(args: argparse.Namespace) -> int:
+    """Show current license status (offline cache + force-verify with Gumroad)."""
+    status = _license.verify_license(force_refresh=args.refresh)
+    label = "VALID" if status.valid else "INVALID"
+    print(f"License: {label}  ({status.source})")
+    print(f"  {status.message}")
+    if status.purchase:
+        for k in ("email", "sale_id", "product_name", "created_at", "subscription_id"):
+            if k in status.purchase:
+                print(f"  {k}: {status.purchase[k]}")
+    return 0 if status.valid else 2
 
 
 def cmd_shield_install_launchd(args: argparse.Namespace) -> int:
@@ -276,6 +333,17 @@ def add_shield_subparser(sub) -> None:
 
     p_start = shield_sub.add_parser("start", help="Start the daemon in the foreground (use launchd for unattended)")
     p_start.set_defaults(func=cmd_shield_start)
+
+    p_act = shield_sub.add_parser("activate", help="Activate Shield with a Gumroad license key")
+    p_act.add_argument("key", help="The license key from your Gumroad purchase email")
+    p_act.set_defaults(func=cmd_shield_activate)
+
+    p_deact = shield_sub.add_parser("deactivate", help="Stop daemon + remove license key")
+    p_deact.set_defaults(func=cmd_shield_deactivate)
+
+    p_lic = shield_sub.add_parser("license", help="Show license status (use --refresh to force a Gumroad check)")
+    p_lic.add_argument("--refresh", action="store_true", help="Bypass the 24h cache and re-verify with Gumroad")
+    p_lic.set_defaults(func=cmd_shield_license)
 
     p_inst = shield_sub.add_parser("install-launchd", help="Install macOS launchd plist for unattended supervision")
     p_inst.set_defaults(func=cmd_shield_install_launchd)

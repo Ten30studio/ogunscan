@@ -30,6 +30,7 @@ from ..models import Finding
 from ..signatures import load_signatures
 from ..diff import diff_findings
 from . import history, state
+from .notifiers import auto_wire_from_env
 from .notifiers.base import Notifier
 from .notifiers.stdout import StdoutNotifier
 from .paths import ensure_dirs, pid_file, state_file
@@ -71,7 +72,10 @@ class ShieldDaemon:
         write_pid: bool = True,
     ):
         ensure_dirs()
-        self.notifiers: List[Notifier] = list(notifiers) if notifiers else [StdoutNotifier()]
+        # If caller didn't pass notifiers explicitly, inspect env to
+        # decide what's enabled. Stdout is always on; Email + Slack opt
+        # in via OGUNSCAN_SMTP_APP_PASS / OGUNSCAN_SLACK_WEBHOOK.
+        self.notifiers: List[Notifier] = list(notifiers) if notifiers else auto_wire_from_env()
         self.scan_interval = scan_interval_seconds
         self.scanner = scanner or OgunScanner(signatures=load_signatures())
         self.write_pid = write_pid

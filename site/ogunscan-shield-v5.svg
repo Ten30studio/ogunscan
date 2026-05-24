@@ -1,0 +1,768 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+<defs>
+  <!-- Atmosphere / background radial -->
+  <radialGradient id="bgAtmos" cx="50%" cy="28%" r="72%" gradientUnits="userSpaceOnUse">
+    <stop offset="0%"   stop-color="#e49030" stop-opacity="0.95"/>
+    <stop offset="30%"  stop-color="#b05020" stop-opacity="0.85"/>
+    <stop offset="60%"  stop-color="#502000" stop-opacity="0.85"/>
+    <stop offset="100%" stop-color="#040100" stop-opacity="1"/>
+  </radialGradient>
+
+  <!-- Warrior body warm glow -->
+  <radialGradient id="warriorGlow" cx="50%" cy="42%" r="48%" gradientUnits="userSpaceOnUse">
+    <stop offset="0%"   stop-color="#e89030" stop-opacity="0.80"/>
+    <stop offset="50%"  stop-color="#c07020" stop-opacity="0.50"/>
+    <stop offset="100%" stop-color="#803000" stop-opacity="0"/>
+  </radialGradient>
+
+  <!-- Shield body gradient -->
+  <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#0e0700"/>
+    <stop offset="100%" stop-color="#050200"/>
+  </linearGradient>
+
+  <!-- Cannon barrel gradient (top to bottom) -->
+  <linearGradient id="cannonBarrel" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#b0a888"/>
+    <stop offset="25%"  stop-color="#807860"/>
+    <stop offset="65%"  stop-color="#504830"/>
+    <stop offset="100%" stop-color="#282010"/>
+  </linearGradient>
+
+  <!-- Wheel gradient -->
+  <linearGradient id="wheelGrad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%"   stop-color="#705840"/>
+    <stop offset="100%" stop-color="#2a1800"/>
+  </linearGradient>
+
+  <!-- Vignette -->
+  <radialGradient id="vignette" cx="50%" cy="50%" r="72%" gradientUnits="userSpaceOnUse">
+    <stop offset="0%"   stop-color="#000000" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#000000" stop-opacity="0.50"/>
+  </radialGradient>
+
+  <!-- Agbada cloak gradient -->
+  <linearGradient id="cloakGrad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%"   stop-color="#b05810"/>
+    <stop offset="100%" stop-color="#6a2e00"/>
+  </linearGradient>
+
+  <!-- Filters -->
+  <filter id="haze" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur stdDeviation="6"/>
+  </filter>
+  <filter id="softBlur" x="-10%" y="-10%" width="120%" height="120%">
+    <feGaussianBlur stdDeviation="3"/>
+  </filter>
+  <filter id="textGlow" x="-20%" y="-50%" width="140%" height="200%">
+    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ff8800" flood-opacity="0.9"/>
+  </filter>
+  <filter id="crестShadow" x="-5%" y="-5%" width="110%" height="110%">
+    <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#000000" flood-opacity="0.75"/>
+  </filter>
+  <filter id="cannonGlow" x="-10%" y="-20%" width="120%" height="140%">
+    <feDropShadow dx="2" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.6"/>
+  </filter>
+</defs>
+
+<!-- ================================================================ -->
+<!-- LAYER 1 — WARRIOR BACKGROUND                                      -->
+<!-- ================================================================ -->
+
+<!-- Base deep black -->
+<rect width="1200" height="1200" fill="#040100"/>
+
+<!-- Battle atmosphere: amber radial from upper center -->
+<rect width="1200" height="1200" fill="url(#bgAtmos)"/>
+
+<!-- Extra warm golden halo behind warrior -->
+<ellipse cx="600" cy="450" rx="520" ry="480" fill="url(#warriorGlow)"/>
+<!-- Extra bright center core glow -->
+<ellipse cx="600" cy="480" rx="280" ry="300" fill="#c07820" opacity="0.22"/>
+
+<!-- == BATTLE SMOKE TOP BAND  == -->
+<rect x="0" y="0" width="1200" height="280" fill="#9a5000" opacity="0.25"/>
+<ellipse cx="300" cy="120" rx="280" ry="180" fill="#7a3800" opacity="0.38" filter="url(#haze)"/>
+<ellipse cx="900" cy="90"  rx="250" ry="160" fill="#8a4400" opacity="0.32" filter="url(#haze)"/>
+<ellipse cx="600" cy="40"  rx="350" ry="140" fill="#c07010" opacity="0.22" filter="url(#haze)"/>
+<ellipse cx="600" cy="180" rx="600" ry="120" fill="#8a4800" opacity="0.18" filter="url(#haze)"/>
+
+<!-- Light rays from upper right (cinematic battle light) -->
+<path d="M 1200,0 L 780,480 L 830,480 Z" fill="#ffcc00" opacity="0.06"/>
+<path d="M 1200,0 L 700,600 L 760,600 Z" fill="#ffaa00" opacity="0.05"/>
+<path d="M 1200,0 L 820,700 L 880,700 Z" fill="#ff8800" opacity="0.04"/>
+<path d="M 1150,0 L 550,700 L 600,700 Z" fill="#ffdd00" opacity="0.03"/>
+
+<!-- == PLATFORM / STEPS (bottom)  == -->
+<!-- Step 1 top (highest, narrowest) -->
+<rect x="310" y="968" width="580" height="28" rx="3" fill="#3a2408"/>
+<rect x="310" y="968" width="580" height="4"  rx="2" fill="#c87010" opacity="0.55"/>
+<!-- Step 2 -->
+<rect x="255" y="996" width="690" height="28" rx="3" fill="#2e1a04"/>
+<rect x="255" y="996" width="690" height="4"  rx="2" fill="#c87010" opacity="0.40"/>
+<!-- Step 3 -->
+<rect x="195" y="1024" width="810" height="32" rx="3" fill="#221202"/>
+<rect x="195" y="1024" width="810" height="4"  rx="2" fill="#c87010" opacity="0.30"/>
+<!-- Step 4 base -->
+<rect x="130" y="1056" width="940" height="144" fill="#120800"/>
+
+<!-- Ground decoration: brick-like horizontal lines -->
+<line x1="130" y1="1090" x2="1070" y2="1090" stroke="#2a1200" stroke-width="2" opacity="0.7"/>
+<line x1="130" y1="1120" x2="1070" y2="1120" stroke="#2a1200" stroke-width="2" opacity="0.6"/>
+<line x1="130" y1="1150" x2="1070" y2="1150" stroke="#2a1200" stroke-width="2" opacity="0.5"/>
+<!-- Vertical brick joints -->
+<line x1="300"  y1="1056" x2="300"  y2="1200" stroke="#1e0e00" stroke-width="2" opacity="0.5"/>
+<line x1="470"  y1="1056" x2="470"  y2="1200" stroke="#1e0e00" stroke-width="2" opacity="0.5"/>
+<line x1="640"  y1="1056" x2="640"  y2="1200" stroke="#1e0e00" stroke-width="2" opacity="0.5"/>
+<line x1="810"  y1="1056" x2="810"  y2="1200" stroke="#1e0e00" stroke-width="2" opacity="0.5"/>
+<line x1="980"  y1="1056" x2="980"  y2="1200" stroke="#1e0e00" stroke-width="2" opacity="0.5"/>
+
+<!-- == WAR BANNERS (left + right)  == -->
+<!-- LEFT banner pole -->
+<rect x="222" y="185" width="12" height="640" rx="4" fill="#4a2a04" opacity="0.95"/>
+<rect x="226" y="185" width="4"  height="640" rx="2" fill="#8a5810" opacity="0.4"/>
+<!-- LEFT banner fabric -->
+<path d="M 234,185 L 370,215 L 365,395 L 234,415 Z" fill="#7a3a04" opacity="0.90"/>
+<path d="M 234,185 L 370,215 L 365,395 L 234,415 Z" fill="none" stroke="#c06010" stroke-width="2" opacity="0.6"/>
+<!-- Banner interior fill (lighter center) -->
+<path d="M 243,200 L 355,224 L 350,386 L 243,403 Z" fill="#a04a08" opacity="0.55"/>
+<!-- Banner detail stripes -->
+<line x1="253" y1="250" x2="348" y2="264" stroke="#e08020" stroke-width="2.5" opacity="0.65"/>
+<line x1="253" y1="280" x2="348" y2="294" stroke="#e08020" stroke-width="2.5" opacity="0.55"/>
+<line x1="253" y1="310" x2="348" y2="325" stroke="#e08020" stroke-width="2.5" opacity="0.55"/>
+<line x1="253" y1="340" x2="348" y2="356" stroke="#e08020" stroke-width="2.5" opacity="0.50"/>
+<!-- Banner Ogun symbol (simple iron chevron) -->
+<path d="M 280,300 L 300,280 L 320,300 M 283,315 L 300,297 L 317,315" stroke="#ffaa00" stroke-width="3" fill="none" opacity="0.7"/>
+
+<!-- RIGHT banner pole -->
+<rect x="966" y="185" width="12" height="640" rx="4" fill="#4a2a04" opacity="0.95"/>
+<rect x="968" y="185" width="4"  height="640" rx="2" fill="#8a5810" opacity="0.4"/>
+<!-- RIGHT banner fabric -->
+<path d="M 966,185 L 830,215 L 835,395 L 966,415 Z" fill="#7a3a04" opacity="0.90"/>
+<path d="M 966,185 L 830,215 L 835,395 L 966,415 Z" fill="none" stroke="#c06010" stroke-width="2" opacity="0.6"/>
+<path d="M 957,200 L 845,224 L 850,386 L 957,403 Z" fill="#a04a08" opacity="0.55"/>
+<line x1="952" y1="250" x2="852" y2="264" stroke="#e08020" stroke-width="2.5" opacity="0.65"/>
+<line x1="952" y1="280" x2="852" y2="294" stroke="#e08020" stroke-width="2.5" opacity="0.55"/>
+<line x1="952" y1="310" x2="852" y2="325" stroke="#e08020" stroke-width="2.5" opacity="0.55"/>
+<line x1="952" y1="340" x2="852" y2="356" stroke="#e08020" stroke-width="2.5" opacity="0.50"/>
+<path d="M 880,300 L 900,280 L 920,300 M 883,315 L 900,297 L 917,315" stroke="#ffaa00" stroke-width="3" fill="none" opacity="0.7"/>
+
+<!-- == FLANKING WARRIORS (4 figures in haze, 30% opacity)  == -->
+<!-- Far-left warrior -->
+<g opacity="0.52" filter="url(#haze)">
+  <ellipse cx="145" cy="790" rx="32" ry="55" fill="#b06020"/>
+  <circle  cx="145" cy="720" r="26" fill="#a05018"/>
+  <!-- Crown simple -->
+  <path d="M 130,694 L 145,650 L 160,694 Z" fill="#d08020"/>
+  <!-- Spear -->
+  <line x1="175" y1="700" x2="215" y2="880" stroke="#6a4010" stroke-width="10"/>
+  <path d="M 215,880 L 200,910 L 228,910 Z" fill="#8a6020"/>
+</g>
+
+<!-- Near-left warrior -->
+<g opacity="0.48" filter="url(#haze)">
+  <ellipse cx="355" cy="840" rx="42" ry="60" fill="#b06020"/>
+  <circle  cx="355" cy="762" r="30" fill="#a05018"/>
+  <path d="M 338,732 L 355,685 L 372,732 Z" fill="#d08020"/>
+  <line x1="390" y1="770" x2="430" y2="930" stroke="#6a4010" stroke-width="9"/>
+</g>
+
+<!-- Near-right warrior -->
+<g opacity="0.48" filter="url(#haze)">
+  <ellipse cx="845" cy="840" rx="42" ry="60" fill="#b06020"/>
+  <circle  cx="845" cy="762" r="30" fill="#a05018"/>
+  <path d="M 828,732 L 845,685 L 862,732 Z" fill="#d08020"/>
+  <line x1="810" y1="770" x2="770" y2="930" stroke="#6a4010" stroke-width="9"/>
+</g>
+
+<!-- Far-right warrior -->
+<g opacity="0.52" filter="url(#haze)">
+  <ellipse cx="1055" cy="790" rx="32" ry="55" fill="#b06020"/>
+  <circle  cx="1055" cy="720" r="26" fill="#a05018"/>
+  <path d="M 1040,694 L 1055,650 L 1070,694 Z" fill="#d08020"/>
+  <line x1="1025" y1="700" x2="985" y2="880" stroke="#6a4010" stroke-width="10"/>
+  <path d="M 985,880 L 970,910 L 998,910 Z" fill="#8a6020"/>
+</g>
+
+<!-- ================================================================ -->
+<!-- MAIN WARRIOR — LATOOSA (Ààrẹ Ọ̀nà Kakanfò)                      -->
+<!-- Full regalia, fills upper 60% of canvas                          -->
+<!-- ================================================================ -->
+
+<!-- == AGBADA / WAR CLOAK (wide flowing robe)  == -->
+<!-- Main cloak body -->
+<path d="M 380,570 Q 290,640 240,790 Q 210,900 220,968 L 980,968 Q 990,900 960,790 Q 910,640 820,570 Q 760,545 600,540 Q 440,545 380,570 Z"
+      fill="url(#cloakGrad)" opacity="0.95"/>
+<!-- Cloak fold lines -->
+<path d="M 440,570 Q 420,680 415,820 Q 412,900 415,968" stroke="#b06820" stroke-width="2.5" fill="none" opacity="0.55"/>
+<path d="M 570,560 Q 562,680 558,820 Q 555,900 558,968" stroke="#b06820" stroke-width="2.5" fill="none" opacity="0.45"/>
+<path d="M 635,558 Q 638,680 640,820 Q 641,900 638,968" stroke="#b06820" stroke-width="2.5" fill="none" opacity="0.45"/>
+<path d="M 760,570 Q 778,680 785,820 Q 788,900 785,968" stroke="#b06820" stroke-width="2.5" fill="none" opacity="0.50"/>
+<!-- Cloak bottom hem embroidery -->
+<path d="M 320,955 Q 600,940 880,955" stroke="#ffaa00" stroke-width="3" fill="none" opacity="0.5"/>
+<path d="M 320,962 Q 600,948 880,962" stroke="#c07010" stroke-width="1.5" fill="none" opacity="0.4"/>
+<!-- Cloak golden trim edge -->
+<path d="M 440,580 Q 370,640 335,790 Q 310,900 320,968" stroke="#c07010" stroke-width="3" fill="none" opacity="0.55"/>
+<path d="M 760,580 Q 830,640 865,790 Q 890,900 880,968" stroke="#c07010" stroke-width="3" fill="none" opacity="0.55"/>
+
+<!-- Under-robe (darker center strip) -->
+<rect x="555" y="575" width="90" height="395" rx="12" fill="#5a2a04" opacity="0.65"/>
+
+<!-- == CHEST-PLATE BEADS — ornate multi-row  == -->
+<!-- Bead strand anchor ropes -->
+<path d="M 508,595 Q 600,582 692,595" stroke="#9a6010" stroke-width="3" fill="none" opacity="0.8"/>
+<path d="M 515,615 Q 600,603 685,615" stroke="#9a6010" stroke-width="2.5" fill="none" opacity="0.7"/>
+<path d="M 522,635 Q 600,623 678,635" stroke="#9a6010" stroke-width="2" fill="none" opacity="0.6"/>
+
+<!-- Row 1 beads -->
+<ellipse cx="520" cy="594" rx="14" ry="9" fill="#ffcc00" opacity="1.0"/>
+<ellipse cx="544" cy="590" rx="10" ry="7" fill="#ff6600" opacity="0.90"/>
+<ellipse cx="567" cy="587" rx="12" ry="8" fill="#ffcc00" opacity="0.90"/>
+<ellipse cx="590" cy="585" rx="10" ry="7" fill="#ff4400" opacity="0.90"/>
+<ellipse cx="610" cy="585" rx="10" ry="7" fill="#ffaa00" opacity="0.90"/>
+<ellipse cx="633" cy="587" rx="12" ry="8" fill="#ff6600" opacity="0.90"/>
+<ellipse cx="656" cy="590" rx="10" ry="7" fill="#ffcc00" opacity="0.90"/>
+<ellipse cx="680" cy="594" rx="12" ry="8" fill="#ff4400" opacity="0.90"/>
+<!-- Highlight glints -->
+<ellipse cx="519" cy="591" rx="4" ry="2.5" fill="#ffe080" opacity="0.6"/>
+<ellipse cx="567" cy="584" rx="4" ry="2.5" fill="#ffe080" opacity="0.6"/>
+<ellipse cx="633" cy="584" rx="4" ry="2.5" fill="#ffe080" opacity="0.6"/>
+
+<!-- Row 2 beads -->
+<ellipse cx="527" cy="614" rx="10" ry="7" fill="#cc8800" opacity="0.88"/>
+<ellipse cx="550" cy="610" rx="12" ry="8" fill="#ffcc00" opacity="0.88"/>
+<ellipse cx="573" cy="607" rx="10" ry="7" fill="#cc8800" opacity="0.88"/>
+<ellipse cx="596" cy="606" rx="12" ry="8" fill="#ffcc00" opacity="0.88"/>
+<ellipse cx="618" cy="606" rx="10" ry="7" fill="#cc8800" opacity="0.88"/>
+<ellipse cx="640" cy="607" rx="12" ry="8" fill="#ffcc00" opacity="0.88"/>
+<ellipse cx="663" cy="610" rx="10" ry="7" fill="#cc8800" opacity="0.88"/>
+<ellipse cx="674" cy="614" rx="12" ry="8" fill="#ffcc00" opacity="0.80"/>
+
+<!-- Row 3 beads (smaller, deeper) -->
+<ellipse cx="536" cy="633" rx="9" ry="6" fill="#aa7000" opacity="0.85"/>
+<ellipse cx="558" cy="629" rx="11" ry="7" fill="#ddaa00" opacity="0.85"/>
+<ellipse cx="580" cy="627" rx="9" ry="6" fill="#aa7000" opacity="0.85"/>
+<ellipse cx="601" cy="626" rx="11" ry="7" fill="#ddaa00" opacity="0.85"/>
+<ellipse cx="622" cy="626" rx="9" ry="6" fill="#aa7000" opacity="0.85"/>
+<ellipse cx="643" cy="627" rx="11" ry="7" fill="#ddaa00" opacity="0.85"/>
+<ellipse cx="665" cy="630" rx="9" ry="6" fill="#aa7000" opacity="0.82"/>
+
+<!-- Central pendant -->
+<path d="M 575,640 L 600,695 L 625,640 Z" fill="#ffaa00" opacity="0.92"/>
+<circle cx="600" cy="700" r="14" fill="#ff5500" opacity="0.92"/>
+<circle cx="600" cy="700" r="8"  fill="#ffaa00" opacity="0.80"/>
+<circle cx="596" cy="696" r="3"  fill="#ffee88" opacity="0.70"/>
+<!-- Pendant chain strands -->
+<path d="M 540,630 Q 568,662 575,640" stroke="#cc8800" stroke-width="2" fill="none" opacity="0.7"/>
+<path d="M 660,630 Q 632,662 625,640" stroke="#cc8800" stroke-width="2" fill="none" opacity="0.7"/>
+
+<!-- == LEFT ARM — holding ada (cutlass)  == -->
+<!-- Shoulder -->
+<ellipse cx="478" cy="595" rx="38" ry="26" fill="#8a5028" opacity="0.93"/>
+<!-- Upper arm (hangs down slightly forward) -->
+<path d="M 455,595 Q 445,655 450,720 L 490,720 Q 495,655 502,595 Z" fill="#905528" opacity="0.78" rx="20"/>
+<!-- Forearm -->
+<path d="M 451,720 Q 445,775 448,820 L 484,820 Q 487,775 490,720 Z" fill="#905528" opacity="0.93"/>
+<!-- Hand left -->
+<ellipse cx="466" cy="830" rx="22" ry="16" fill="#7a4520" opacity="0.85"/>
+
+<!-- Iron bangles left arm -->
+<rect x="445" y="700" width="48" height="9" rx="4" fill="#5a5440" opacity="0.92"/>
+<rect x="445" y="714" width="48" height="9" rx="4" fill="#7a7460" opacity="0.88"/>
+<rect x="445" y="728" width="48" height="9" rx="4" fill="#5a5440" opacity="0.88"/>
+<rect x="445" y="742" width="48" height="6" rx="3" fill="#9a9880" opacity="0.70"/>
+<!-- Bangles highlights -->
+<rect x="447" y="701" width="44" height="2" rx="1" fill="#a0a080" opacity="0.50"/>
+<rect x="447" y="715" width="44" height="2" rx="1" fill="#b0b090" opacity="0.50"/>
+
+<!-- === ADA (cutlass / sword) === -->
+<!-- Blade — wide, slightly curved, iron grey -->
+<path d="M 445,838 Q 425,900 400,980 L 420,988 Q 448,912 470,845 Z" fill="#808878" opacity="0.88"/>
+<!-- Blade edge (bright) -->
+<path d="M 400,980 L 420,988 Q 420,985 418,980" stroke="#c0c8b8" stroke-width="2" fill="none" opacity="0.80"/>
+<!-- Blade fuller (central groove) -->
+<path d="M 450,842 Q 432,905 418,974" stroke="#a0a890" stroke-width="2" fill="none" opacity="0.55"/>
+<!-- Ada guard -->
+<rect x="436" y="830" width="40" height="14" rx="5" fill="#b88020"/>
+<rect x="436" y="830" width="40" height="14" rx="5" fill="none" stroke="#ffaa00" stroke-width="1.5" opacity="0.7"/>
+<!-- Ada grip -->
+<rect x="446" y="800" width="20" height="32" rx="5" fill="#5a2e08"/>
+<!-- Grip wrapping -->
+<line x1="446" y1="808" x2="466" y2="808" stroke="#c08020" stroke-width="2.5" opacity="0.8"/>
+<line x1="446" y1="816" x2="466" y2="816" stroke="#c08020" stroke-width="2.5" opacity="0.8"/>
+<line x1="446" y1="824" x2="466" y2="824" stroke="#c08020" stroke-width="2.5" opacity="0.8"/>
+<!-- Pommel -->
+<ellipse cx="456" cy="799" rx="13" ry="9" fill="#c08020"/>
+<ellipse cx="456" cy="799" rx="8"  ry="6" fill="#e0a830" opacity="0.7"/>
+
+<!-- == RIGHT ARM — raised, holding iron spear  == -->
+<!-- Shoulder right -->
+<ellipse cx="722" cy="593" rx="38" ry="26" fill="#8a5028" opacity="0.93"/>
+<!-- Upper arm (raised at angle) -->
+<path d="M 705,595 Q 720,530 730,475 L 768,482 Q 760,537 750,595 Z" fill="#905528" opacity="0.93"/>
+<!-- Forearm (further raised) -->
+<path d="M 728,480 Q 740,420 748,375 L 780,382 Q 772,428 760,486 Z" fill="#905528" opacity="0.93"/>
+<!-- Hand right -->
+<ellipse cx="762" cy="365" rx="22" ry="16" fill="#7a4520" opacity="0.85"/>
+
+<!-- Iron bangles right arm -->
+<rect x="713" y="530" width="48" height="9" rx="4" fill="#5a5440" opacity="0.92"/>
+<rect x="715" y="544" width="46" height="9" rx="4" fill="#7a7460" opacity="0.88"/>
+<rect x="715" y="558" width="46" height="7" rx="3" fill="#5a5440" opacity="0.88"/>
+<rect x="715" y="485" width="44" height="8" rx="3" fill="#9a9880" opacity="0.70"/>
+
+<!-- === IRON SPEAR (Ogun's weapon) === -->
+<!-- Shaft — tall, angled slightly back -->
+<rect x="757" y="100" width="16" height="760" rx="6" fill="#5a4228" transform="rotate(-7, 765, 480)"/>
+<!-- Shaft grain -->
+<line x1="762" y1="110" x2="762" y2="855" stroke="#8a6840" stroke-width="2" opacity="0.40" transform="rotate(-7, 765, 480)"/>
+<!-- Shaft iron reinforcing bands -->
+<rect x="749" y="420" width="24" height="8" rx="3" fill="#6a6050" transform="rotate(-7, 765, 424)" opacity="0.85"/>
+<rect x="749" y="520" width="24" height="8" rx="3" fill="#6a6050" transform="rotate(-7, 765, 524)" opacity="0.80"/>
+<rect x="749" y="620" width="24" height="8" rx="3" fill="#6a6050" transform="rotate(-7, 765, 624)" opacity="0.75"/>
+<rect x="749" y="720" width="24" height="8" rx="3" fill="#5a5040" transform="rotate(-7, 765, 724)" opacity="0.70"/>
+<!-- Spear head — broad iron blade -->
+<path d="M 753,95 L 735,175 L 755,155 L 775,175 L 757,95 Z" fill="#9a9280" transform="rotate(-7, 755, 135)"/>
+<!-- Spear blade fuller groove -->
+<line x1="755" y1="100" x2="755" y2="165" stroke="#bab4a0" stroke-width="2.5" opacity="0.7" transform="rotate(-7, 755, 130)"/>
+<!-- Iron tip accent (bright) -->
+<path d="M 752,96 L 758,96 L 758,118 L 752,118 Z" fill="#c0baa0" opacity="0.8" transform="rotate(-7, 755, 107)"/>
+<!-- Cross-guard ring near head -->
+<rect x="742" y="170" width="28" height="10" rx="4" fill="#7a7060" transform="rotate(-7, 756, 175)"/>
+<!-- Butt cap iron -->
+<path d="M 735,855 L 760,875 L 750,865 Z" fill="#5a5040" transform="rotate(-7, 748, 865)"/>
+
+<!-- == WAR BIRD on left shoulder  == -->
+<!-- Bird body (on left shoulder area) -->
+<g opacity="0.85">
+  <!-- Body -->
+  <ellipse cx="476" cy="525" rx="52" ry="28" fill="#1e1000"/>
+  <!-- Head -->
+  <ellipse cx="512" cy="500" rx="24" ry="20" fill="#2a1604"/>
+  <!-- Beak — hooked raptor beak -->
+  <path d="M 532,494 L 554,501 L 536,510 L 534,504 Z" fill="#c08000"/>
+  <!-- Eye -->
+  <circle cx="521" cy="496" r="6"  fill="#ff5500"/>
+  <circle cx="522" cy="495" r="3"  fill="#000000"/>
+  <circle cx="523" cy="494" r="1"  fill="#ffffff" opacity="0.7"/>
+  <!-- Neck feathers -->
+  <path d="M 492,515 Q 500,495 512,500 Q 502,520 492,515 Z" fill="#3a2008" opacity="0.8"/>
+  <!-- Wing spread LEFT — partially open, dramatic -->
+  <path d="M 455,520 Q 380,482 345,535 Q 370,548 430,542 Q 445,532 455,525 Z" fill="#180e00" opacity="0.92"/>
+  <!-- Wing feather primaries left -->
+  <path d="M 400,528 Q 355,498 350,530" stroke="#3a2410" stroke-width="2.5" fill="none"/>
+  <path d="M 418,522 Q 373,494 370,524" stroke="#3a2410" stroke-width="2.5" fill="none"/>
+  <path d="M 438,518 Q 395,492 390,520" stroke="#3a2410" stroke-width="2.5" fill="none"/>
+  <!-- Wing spread RIGHT — smaller -->
+  <path d="M 500,522 Q 558,490 582,516 Q 562,534 522,535 Z" fill="#180e00" opacity="0.90"/>
+  <path d="M 538,520 Q 568,496 580,514" stroke="#3a2410" stroke-width="2" fill="none"/>
+  <!-- Talons gripping shoulder -->
+  <path d="M 464,548 L 452,572 L 460,568 L 468,580 L 474,568 L 480,578 L 486,567 L 494,565 L 482,547 Z" fill="#5a3810"/>
+  <!-- Back feathers texture -->
+  <ellipse cx="460" cy="532" rx="30" ry="12" fill="#241408" opacity="0.7"/>
+</g>
+
+<!-- == TORSO / BODY CENTER  == -->
+<path d="M 548,570 Q 530,620 535,720 L 665,720 Q 670,620 652,570 Q 630,558 600,556 Q 570,558 548,570 Z"
+      fill="#8a4e24" opacity="0.95"/>
+
+<!-- == NECK  == -->
+<rect x="570" y="290" width="60" height="55" rx="18" fill="#8a4520" opacity="0.95"/>
+<!-- Neck beads / collar -->
+<path d="M 555,296 Q 600,309 645,296" stroke="#c08020" stroke-width="4" fill="none" opacity="0.75"/>
+<circle cx="570" cy="299" r="5" fill="#ffaa00" opacity="0.7"/>
+<circle cx="585" cy="303" r="4" fill="#ff6600" opacity="0.7"/>
+<circle cx="600" cy="305" r="5" fill="#ffaa00" opacity="0.7"/>
+<circle cx="615" cy="303" r="4" fill="#ff6600" opacity="0.7"/>
+<circle cx="630" cy="299" r="5" fill="#ffaa00" opacity="0.7"/>
+
+<!-- == HEAD  == -->
+<ellipse cx="600" cy="215" rx="72" ry="78" fill="#c07035" opacity="1.0"/>
+
+<!-- Traditional Yoruba face markings (ila) — vertical lines on cheeks -->
+<line x1="572" y1="191" x2="570" y2="229" stroke="#5a1800" stroke-width="3.5" opacity="0.85"/>
+<line x1="564" y1="195" x2="562" y2="229" stroke="#5a1800" stroke-width="3" opacity="0.75"/>
+<line x1="556" y1="199" x2="554" y2="227" stroke="#5a1800" stroke-width="2.5" opacity="0.65"/>
+<line x1="628" y1="191" x2="630" y2="229" stroke="#5a1800" stroke-width="3.5" opacity="0.85"/>
+<line x1="636" y1="195" x2="638" y2="229" stroke="#5a1800" stroke-width="3" opacity="0.75"/>
+<line x1="644" y1="199" x2="646" y2="227" stroke="#5a1800" stroke-width="2.5" opacity="0.65"/>
+
+<!-- Eyes (fierce, commanding) -->
+<ellipse cx="578" cy="203" rx="13" ry="11" fill="#1a0800"/>
+<ellipse cx="622" cy="203" rx="13" ry="11" fill="#1a0800"/>
+<!-- Iris — amber fire -->
+<ellipse cx="578" cy="203" rx="8"  ry="8"  fill="#ff9900" opacity="0.7"/>
+<ellipse cx="622" cy="203" rx="8"  ry="8"  fill="#ff9900" opacity="0.7"/>
+<!-- Pupil -->
+<ellipse cx="578" cy="203" rx="4"  ry="4"  fill="#000000"/>
+<ellipse cx="622" cy="203" rx="4"  ry="4"  fill="#000000"/>
+<!-- Eye glint -->
+<circle cx="581" cy="200" r="3" fill="#ffffff" opacity="0.6"/>
+<circle cx="625" cy="200" r="3" fill="#ffffff" opacity="0.6"/>
+<!-- Brow ridge (thick, severe) -->
+<path d="M 564,191 Q 578,185 592,189" stroke="#3a1500" stroke-width="4" fill="none" opacity="0.8"/>
+<path d="M 608,189 Q 622,185 636,191" stroke="#3a1500" stroke-width="4" fill="none" opacity="0.8"/>
+
+<!-- Nose -->
+<path d="M 594,209 L 590,229 Q 600,235 610,229 L 606,209 Z" fill="#7a3e18" opacity="0.65"/>
+<ellipse cx="590" cy="229" rx="8" ry="5" fill="#6a3412" opacity="0.6"/>
+<ellipse cx="610" cy="229" rx="8" ry="5" fill="#6a3412" opacity="0.6"/>
+
+<!-- Mouth (stern, closed) -->
+<path d="M 584,245 Q 600,241 616,245" stroke="#3a1200" stroke-width="4" fill="none" opacity="0.85"/>
+<path d="M 586,250 Q 600,247 614,250" stroke="#5a2000" stroke-width="2" fill="none" opacity="0.5"/>
+
+<!-- Jaw line definition -->
+<path d="M 548,241 Q 560,279 580,287 Q 600,293 620,287 Q 640,279 652,241" stroke="#5a2808" stroke-width="2" fill="none" opacity="0.5"/>
+
+<!-- == WAR CROWN — elaborate, tall  == -->
+<!-- Crown base ring / band -->
+<rect x="543" y="138" width="114" height="32" rx="6" fill="#8a5a10" opacity="0.96"/>
+<rect x="543" y="138" width="114" height="32" rx="6" fill="none" stroke="#ffaa00" stroke-width="2.5" opacity="0.90"/>
+<!-- Crown band jewels -->
+<ellipse cx="572" cy="154" rx="11" ry="8" fill="#cc2200" opacity="0.95"/>
+<ellipse cx="600" cy="154" rx="11" ry="8" fill="#ffaa00" opacity="0.95"/>
+<ellipse cx="628" cy="154" rx="11" ry="8" fill="#cc2200" opacity="0.95"/>
+<!-- Jewel highlights -->
+<ellipse cx="570" cy="151" rx="4" ry="2.5" fill="#ff8880" opacity="0.6"/>
+<ellipse cx="598" cy="151" rx="4" ry="2.5" fill="#ffe080" opacity="0.6"/>
+<ellipse cx="626" cy="151" rx="4" ry="2.5" fill="#ff8880" opacity="0.6"/>
+<!-- Band inner filigree pattern -->
+<path d="M 553,145 L 560,153 L 553,161 M 647,145 L 640,153 L 647,161" stroke="#ffcc40" stroke-width="1.5" fill="none" opacity="0.55"/>
+
+<!-- Crown tines/spikes (from band upward) -->
+<!-- Far left tine -->
+<path d="M 543,138 L 536,33 L 553,138 Z" fill="#9a6a14" opacity="0.88"/>
+<!-- Left tine -->
+<path d="M 562,138 L 552,-7 L 578,138 Z" fill="#aa7818" opacity="0.90"/>
+<!-- Central TALL spike -->
+<path d="M 575,138 L 566,-75 L 600,-112 L 634,-75 L 625,138 Z" fill="#d0a020" opacity="1.0"/>
+<!-- Central spike highlight -->
+<path d="M 582,133 L 574,-58 L 600,-95 L 600,133 Z" fill="#e0b040" opacity="0.35"/>
+<!-- Right tine -->
+<path d="M 638,138 L 648,-7 L 622,138 Z" fill="#aa7818" opacity="0.90"/>
+<!-- Far right tine -->
+<path d="M 657,138 L 664,33 L 647,138 Z" fill="#9a6a14" opacity="0.88"/>
+
+<!-- Crown apex orb -->
+<circle cx="600" cy="30" r="38" fill="#ffdd00" opacity="1.0"/>
+<circle cx="600" cy="30" r="25" fill="#ff8800" opacity="0.95"/>
+<circle cx="600" cy="30" r="15"  fill="#ffee66" opacity="0.95"/>
+<circle cx="600" cy="30" r="7"  fill="#ffffff"  opacity="0.90"/>
+<!-- Orb ring -->
+<circle cx="600" cy="30" r="38" fill="none" stroke="#ffcc00" stroke-width="3.5" opacity="0.90"/>
+<!-- Crown spike accents at tine tips -->
+<circle cx="553" cy="31" r="8" fill="#ffcc00" opacity="0.80"/>
+<circle cx="565" cy="9" r="9" fill="#ffcc00" opacity="0.75"/>
+<circle cx="635" cy="9" r="9" fill="#ffcc00" opacity="0.75"/>
+<circle cx="647" cy="31" r="8" fill="#ffcc00" opacity="0.80"/>
+
+<!-- Hanging bead strands from crown -->
+<!-- Left strands -->
+<line x1="548" y1="425" x2="510" y2="545" stroke="#ffaa00" stroke-width="2.5" opacity="0.72"/>
+<circle cx="502" cy="295" r="6" fill="#ffaa00" opacity="0.72"/>
+<line x1="548" y1="440" x2="504" y2="565" stroke="#ff7700" stroke-width="2" opacity="0.65"/>
+<circle cx="496" cy="315" r="5" fill="#ff7700" opacity="0.65"/>
+<line x1="548" y1="455" x2="498" y2="582" stroke="#cc6600" stroke-width="1.5" opacity="0.55"/>
+<!-- Right strands -->
+<line x1="652" y1="425" x2="690" y2="545" stroke="#ffaa00" stroke-width="2.5" opacity="0.72"/>
+<circle cx="698" cy="295" r="6" fill="#ffaa00" opacity="0.72"/>
+<line x1="652" y1="440" x2="696" y2="565" stroke="#ff7700" stroke-width="2" opacity="0.65"/>
+<circle cx="704" cy="315" r="5" fill="#ff7700" opacity="0.65"/>
+<line x1="652" y1="455" x2="702" y2="582" stroke="#cc6600" stroke-width="1.5" opacity="0.55"/>
+
+<!-- Crown side veil / hanging bead curtains -->
+<path d="M 543,138 Q 505,159 500,213 Q 495,258 504,281 L 518,278 Q 512,249 518,209 Q 523,173 543,158 Z"
+      fill="#7a3e0c" opacity="0.50"/>
+<path d="M 657,138 Q 695,159 700,213 Q 705,258 696,281 L 682,278 Q 688,249 682,209 Q 677,173 657,158 Z"
+      fill="#7a3e0c" opacity="0.50"/>
+
+<!-- Crown veil bead rows -->
+<path d="M 502,187 Q 515,195 527,190" stroke="#b08020" stroke-width="2" fill="none" opacity="0.65"/>
+<path d="M 502,203 Q 516,211 528,206" stroke="#b08020" stroke-width="2" fill="none" opacity="0.60"/>
+<path d="M 698,187 Q 685,195 673,190" stroke="#b08020" stroke-width="2" fill="none" opacity="0.65"/>
+<path d="M 698,203 Q 684,211 672,206" stroke="#b08020" stroke-width="2" fill="none" opacity="0.60"/>
+
+<!-- == Ground shadow under warrior  == -->
+<ellipse cx="600" cy="970" rx="200" ry="16" fill="#000000" opacity="0.50"/>
+
+<!-- == Ember/spark particles floating up  == -->
+<circle cx="435" cy="305" r="3.5" fill="#ffaa00" opacity="0.78"/>
+<circle cx="478" cy="255" r="2.5" fill="#ff8800" opacity="0.68"/>
+<circle cx="755" cy="322" r="3.5" fill="#ffcc00" opacity="0.78"/>
+<circle cx="818" cy="268" r="2.5" fill="#ff8800" opacity="0.65"/>
+<circle cx="682" cy="178" r="4"   fill="#ffaa00" opacity="0.82"/>
+<circle cx="528" cy="192" r="3"   fill="#ff6600" opacity="0.72"/>
+<circle cx="388" cy="408" r="2"   fill="#ffcc00" opacity="0.55"/>
+<circle cx="902" cy="388" r="3"   fill="#ffaa00" opacity="0.62"/>
+<circle cx="340" cy="350" r="2.5" fill="#ff8800" opacity="0.48"/>
+<circle cx="990" cy="320" r="2.5" fill="#ffcc00" opacity="0.50"/>
+<circle cx="560" cy="145" r="3"   fill="#ff9900" opacity="0.65"/>
+<circle cx="640" cy="130" r="2"   fill="#ffdd00" opacity="0.60"/>
+<circle cx="780" cy="160" r="3"   fill="#ffaa00" opacity="0.58"/>
+
+<!-- == Warrior head fierce glow — pierces through the iron shield == -->
+<ellipse cx="600" cy="215" rx="115" ry="120" fill="#e08020" opacity="0.42" filter="url(#softBlur)"/>
+<ellipse cx="600" cy="215" rx="80"  ry="85"  fill="#ff9030" opacity="0.28" filter="url(#softBlur)"/>
+<!-- == Warrior silhouette glow BEHIND the crest (visible through iron) == -->
+<!-- Head glow halo -->
+<ellipse cx="600" cy="215" rx="95" ry="100" fill="#d07020" opacity="0.32" filter="url(#softBlur)"/>
+<!-- Crown spike radiance -->
+<ellipse cx="600" cy="90" rx="80" ry="150" fill="#c08020" opacity="0.25" filter="url(#haze)"/>
+<!-- Body heat aura -->
+<ellipse cx="600" cy="700" rx="200" ry="250" fill="#8a4010" opacity="0.25" filter="url(#haze)"/>
+
+<!-- ================================================================ -->
+<!-- LAYER 2 — OGUNSCAN CREST (Arsenal-style heraldic badge)          -->
+<!-- Shield centered at (600, 580), spans y=248 to y=878              -->
+<!-- ================================================================ -->
+
+<!-- Drop shadow behind entire crest -->
+<g filter="url(#crестShadow)" opacity="0.85">
+  <path d="M 382,308 L 818,308 Q 842,308 842,332 L 842,700 Q 842,758 600,882 Q 358,758 358,700 L 358,332 Q 358,308 382,308 Z"
+        fill="#000000"/>
+</g>
+
+<!-- == TOP BANNER RIBBON  == -->
+<path d="M 336,256 Q 600,238 864,256 L 854,308 Q 600,290 346,308 Z"
+      fill="#0f0700" opacity="0.97"/>
+<path d="M 336,256 Q 600,238 864,256 L 854,308 Q 600,290 346,308 Z"
+      fill="none" stroke="#e07010" stroke-width="2.5" opacity="0.92"/>
+<!-- Left fold -->
+<path d="M 336,256 L 304,282 L 346,308 Z" fill="#080400" opacity="0.97"/>
+<path d="M 336,256 L 304,282 L 346,308 Z" fill="none" stroke="#e07010" stroke-width="1.8" opacity="0.75"/>
+<!-- Right fold -->
+<path d="M 864,256 L 896,282 L 854,308 Z" fill="#080400" opacity="0.97"/>
+<path d="M 864,256 L 896,282 L 854,308 Z" fill="none" stroke="#e07010" stroke-width="1.8" opacity="0.75"/>
+<!-- OGUNSCAN text -->
+<text x="600" y="293"
+      font-family="Georgia, 'Times New Roman', serif"
+      font-size="38" font-weight="900"
+      fill="#ff8800" text-anchor="middle" letter-spacing="9"
+      filter="url(#textGlow)">OGUNSCAN</text>
+
+<!-- == MAIN SHIELD BODY  == -->
+<path d="M 382,308 L 818,308 Q 842,308 842,332 L 842,700 Q 842,758 600,882 Q 358,758 358,700 L 358,332 Q 358,308 382,308 Z"
+      fill="url(#shieldGrad)" opacity="0.55"/>
+<!-- Shield outer border — amber/orange -->
+<path d="M 382,308 L 818,308 Q 842,308 842,332 L 842,700 Q 842,758 600,882 Q 358,758 358,700 L 358,332 Q 358,308 382,308 Z"
+      fill="none" stroke="#e07010" stroke-width="4.5" opacity="0.95"/>
+<!-- Shield inner border — thinner, golden -->
+<path d="M 396,322 L 804,322 Q 826,322 826,344 L 826,696 Q 826,748 600,866 Q 374,748 374,696 L 374,344 Q 374,322 396,322 Z"
+      fill="none" stroke="#c05808" stroke-width="2" opacity="0.65"/>
+
+<!-- == YORUBA FILIGREE — corner decorations  == -->
+<!-- Top-left corner bracket -->
+<path d="M 396,322 L 450,322 L 396,376 Z" fill="none" stroke="#e07010" stroke-width="1.8" opacity="0.55"/>
+<path d="M 396,322 L 424,322 L 396,350 Z" fill="#e07010" opacity="0.12"/>
+<!-- Top-right corner bracket -->
+<path d="M 804,322 L 750,322 L 804,376 Z" fill="none" stroke="#e07010" stroke-width="1.8" opacity="0.55"/>
+<path d="M 804,322 L 776,322 L 804,350 Z" fill="#e07010" opacity="0.12"/>
+
+<!-- Zigzag inner top border (Yoruba geometric pattern) -->
+<path d="M 400,338 L 418,354 L 436,338 L 454,354 L 472,338 L 490,354 L 508,338 L 526,354 L 544,338 L 562,354 L 580,338 L 598,354 L 616,338 L 634,354 L 652,338 L 670,354 L 688,338 L 706,354 L 724,338 L 742,354 L 760,338 L 778,354 L 796,338 L 806,344"
+      stroke="#e07010" stroke-width="2" fill="none" opacity="0.45"/>
+
+<!-- == SHIELD TOP SECTION DIVIDER  == -->
+<line x1="378" y1="430" x2="822" y2="430" stroke="#e07010" stroke-width="1.5" opacity="0.38"/>
+
+
+<!-- ================================================================ -->
+<!-- THE CANNON — HERO ELEMENT (centered in shield)                   -->
+<!-- Barrel points LEFT, carriage/wheels on RIGHT — Arsenal style     -->
+<!-- Centered at (600, 590), spans ~380px wide                        -->
+<!-- ================================================================ -->
+
+<g transform="translate(600, 590) scale(1.15)" filter="url(#cannonGlow)">
+
+  <!-- === CANNON BARREL === -->
+  <!-- Main barrel body — tapers slightly toward muzzle (left) -->
+  <path d="M -238,-44 L 78,-50 Q 92,-50 92,-34 L 92,34 Q 92,50 78,50 L -238,44 Q -260,44 -260,28 L -260,-28 Q -260,-44 -238,-44 Z"
+        fill="url(#cannonBarrel)"/>
+  <!-- Top highlight (metallic sheen) -->
+  <path d="M -258,-24 L 88,-32 Q 90,-32 90,-18 L 90,-8 Q 50,-18 -258,-12 Z"
+        fill="#c8c0a0" opacity="0.30"/>
+  <!-- Side reflection line -->
+  <line x1="-258" y1="-8" x2="88" y2="-12" stroke="#a09878" stroke-width="1.5" opacity="0.20"/>
+
+  <!-- REINFORCING RINGS (cast iron hoops, breech → muzzle) -->
+  <!-- Ring A — breech ring (widest) -->
+  <rect x="52" y="-56" width="24" height="112" rx="6" fill="#524a38"/>
+  <rect x="52" y="-56" width="24" height="112" rx="6" fill="none" stroke="#7a7260" stroke-width="2.5"/>
+  <rect x="54" y="-56" width="20" height="6"   rx="2" fill="#a09880" opacity="0.60"/>
+  <!-- Ring B -->
+  <rect x="6"  y="-53" width="18" height="106" rx="5" fill="#4a4230"/>
+  <rect x="6"  y="-53" width="18" height="106" rx="5" fill="none" stroke="#6a6250" stroke-width="2"/>
+  <rect x="8"  y="-53" width="14" height="5"   rx="2" fill="#9a9278" opacity="0.55"/>
+  <!-- Ring C -->
+  <rect x="-48" y="-51" width="16" height="102" rx="4" fill="#4a4230"/>
+  <rect x="-48" y="-51" width="16" height="102" rx="4" fill="none" stroke="#6a6250" stroke-width="1.8"/>
+  <!-- Ring D -->
+  <rect x="-108" y="-49" width="16" height="98"  rx="4" fill="#4a4230"/>
+  <rect x="-108" y="-49" width="16" height="98"  rx="4" fill="none" stroke="#6a6250" stroke-width="1.8"/>
+  <!-- Ring E (chase ring, near muzzle) -->
+  <rect x="-170" y="-48" width="16" height="96"  rx="4" fill="#524a38"/>
+  <rect x="-170" y="-48" width="16" height="96"  rx="4" fill="none" stroke="#7a7260" stroke-width="1.8"/>
+  <rect x="-168" y="-48" width="12" height="5"   rx="2" fill="#9a9278" opacity="0.50"/>
+  <!-- Muzzle band (flared, more decorative) -->
+  <rect x="-234" y="-50" width="18" height="100" rx="5" fill="#5a5240"/>
+  <rect x="-234" y="-50" width="18" height="100" rx="5" fill="none" stroke="#8a8270" stroke-width="2.5"/>
+
+  <!-- MUZZLE — flared, open bore -->
+  <path d="M -258,-38 L -238,-44 L -238,44 L -258,38 Q -282,32 -282,0 Q -282,-32 -258,-38 Z"
+        fill="#3a3422"/>
+  <!-- Bore opening -->
+  <ellipse cx="-272" cy="0" rx="13" ry="40" fill="#282018"/>
+  <ellipse cx="-270" cy="0" rx="9"  ry="34" fill="#100c08" opacity="0.95"/>
+  <!-- Muzzle crown ring -->
+  <ellipse cx="-258" cy="0" rx="7"  ry="50" fill="none" stroke="#7a7260" stroke-width="3.5" opacity="0.85"/>
+  <!-- Muzzle face detail -->
+  <ellipse cx="-268" cy="0" rx="4"  ry="38" fill="#1a1410" opacity="0.7"/>
+
+  <!-- BREECH — thick end (right) -->
+  <path d="M 78,-50 Q 98,-52 110,-38 L 110,38 Q 98,52 78,50 L 92,34 L 92,-34 Z"
+        fill="#2e2818"/>
+  <ellipse cx="104" cy="0" rx="10" ry="44" fill="#201c10"/>
+  <!-- Touch hole / vent -->
+  <ellipse cx="70" cy="-52" rx="7" ry="4" fill="#141008"/>
+  <ellipse cx="70" cy="-52" rx="7" ry="4" fill="none" stroke="#7a6840" stroke-width="2.5"/>
+  <!-- Vent cover (small rectangle) -->
+  <rect x="64" y="-60" width="14" height="8" rx="3" fill="#3a3220"/>
+  <!-- Breech knob handle -->
+  <circle cx="108" cy="-8" r="8" fill="#3a3220"/>
+  <circle cx="108" cy="-8" r="5" fill="#504840"/>
+
+  <!-- Elevation screw assembly (below breech) -->
+  <rect x="65" y="50" width="30" height="18" rx="4" fill="#2a2418"/>
+  <circle cx="80" cy="59" r="8" fill="#3a3428"/>
+  <circle cx="80" cy="59" r="5" fill="#504838"/>
+  <line x1="75" y1="59" x2="85" y2="59" stroke="#6a6250" stroke-width="2"/>
+  <line x1="80" y1="54" x2="80" y2="64" stroke="#6a6250" stroke-width="2"/>
+
+  <!-- === WOODEN GUN CARRIAGE === -->
+  <!-- Main carriage cheeks (two side boards) -->
+  <path d="M -65,45 L 96,52 L 114,95 L -65,88 Z" fill="#5a3a10"/>
+  <path d="M -65,45 L 96,52 L 114,95 L -65,88 Z" fill="none" stroke="#7a5220" stroke-width="2"/>
+  <!-- Wood grain lines -->
+  <line x1="-45" y1="47" x2="-45" y2="86" stroke="#7a5220" stroke-width="1.5" opacity="0.50"/>
+  <line x1="-15" y1="48" x2="-15" y2="87" stroke="#7a5220" stroke-width="1.5" opacity="0.45"/>
+  <line x1="20"  y1="49" x2="20"  y2="88" stroke="#7a5220" stroke-width="1.5" opacity="0.45"/>
+  <line x1="58"  y1="51" x2="58"  y2="89" stroke="#7a5220" stroke-width="1.5" opacity="0.45"/>
+  <!-- Carriage iron side reinforcements -->
+  <rect x="-62" y="45" width="14" height="42" rx="3" fill="#3a3420" opacity="0.85"/>
+  <rect x="88"  y="50" width="14" height="40" rx="3" fill="#3a3420" opacity="0.85"/>
+  <!-- Iron brace across -->
+  <rect x="-55" y="58" width="150" height="6"  rx="2" fill="#2a2818" opacity="0.70"/>
+  <rect x="-55" y="72" width="150" height="6"  rx="2" fill="#2a2818" opacity="0.60"/>
+
+  <!-- Carriage trail / spades (extends back-right) -->
+  <path d="M 96,52 L 115,95 L 155,118 L 142,130 L 102,100 L 88,65 Z"
+        fill="#4a2a0a"/>
+  <path d="M 96,52 L 115,95 L 155,118 L 142,130 L 102,100 L 88,65 Z"
+        fill="none" stroke="#7a5020" stroke-width="1.5"/>
+
+  <!-- Axle beam -->
+  <rect x="-52" y="86" width="156" height="14" rx="5" fill="#2e2818"/>
+  <rect x="-52" y="86" width="156" height="14" rx="5" fill="none" stroke="#4a4030" stroke-width="1.5"/>
+
+  <!-- === WHEELS === -->
+  <!-- RIGHT wheel (larger, front) -->
+  <circle cx="22" cy="118" r="46" fill="url(#wheelGrad)" stroke="#5a4020" stroke-width="3.5"/>
+  <circle cx="22" cy="118" r="41" fill="none" stroke="#6a5030" stroke-width="1.5" opacity="0.50"/>
+  <!-- Spokes (8 spokes) -->
+  <line x1="22" y1="72"  x2="22"  y2="164" stroke="#7a6040" stroke-width="4.5"/>
+  <line x1="22" y1="72"  x2="22"  y2="164" stroke="#9a8060" stroke-width="1.5" opacity="0.30"/>
+  <line x1="-24" y1="86" x2="68"  y2="150" stroke="#7a6040" stroke-width="4.5"/>
+  <line x1="-24" y1="150" x2="68" y2="86"  stroke="#7a6040" stroke-width="4.5"/>
+  <line x1="-24" y1="118" x2="68" y2="118" stroke="#7a6040" stroke-width="4.5"/>
+  <!-- Diagonal spokes -->
+  <line x1="-10" y1="80" x2="54"  y2="156" stroke="#6a5030" stroke-width="3" opacity="0.65"/>
+  <line x1="-10" y1="156" x2="54" y2="80"  stroke="#6a5030" stroke-width="3" opacity="0.65"/>
+  <!-- Hub right -->
+  <circle cx="22" cy="118" r="14" fill="#4a3820" stroke="#8a7040" stroke-width="2.5"/>
+  <circle cx="22" cy="118" r="7"  fill="#2a1a00" stroke="#6a5020" stroke-width="2"/>
+  <!-- Rim highlight -->
+  <path d="M 22,72 Q 64,74 68,118" stroke="#b09870" stroke-width="2.5" fill="none" opacity="0.45"/>
+  <!-- Iron tire -->
+  <circle cx="22" cy="118" r="46" fill="none" stroke="#3a3020" stroke-width="4" opacity="0.7"/>
+
+  <!-- LEFT wheel (smaller, rear) -->
+  <circle cx="-48" cy="120" r="40" fill="url(#wheelGrad)" stroke="#5a4020" stroke-width="3"/>
+  <circle cx="-48" cy="120" r="35" fill="none" stroke="#6a5030" stroke-width="1.5" opacity="0.45"/>
+  <!-- Spokes -->
+  <line x1="-48" y1="80"  x2="-48" y2="160" stroke="#7a6040" stroke-width="4"/>
+  <line x1="-88" y1="94"  x2="-8"  y2="146" stroke="#7a6040" stroke-width="4"/>
+  <line x1="-88" y1="146" x2="-8"  y2="94"  stroke="#7a6040" stroke-width="4"/>
+  <line x1="-88" y1="120" x2="-8"  y2="120" stroke="#7a6040" stroke-width="4"/>
+  <line x1="-76" y1="86"  x2="-20" y2="154" stroke="#6a5030" stroke-width="3" opacity="0.60"/>
+  <line x1="-76" y1="154" x2="-20" y2="86"  stroke="#6a5030" stroke-width="3" opacity="0.60"/>
+  <!-- Hub left -->
+  <circle cx="-48" cy="120" r="12" fill="#4a3820" stroke="#8a7040" stroke-width="2"/>
+  <circle cx="-48" cy="120" r="6"  fill="#2a1a00" stroke="#6a5020" stroke-width="1.5"/>
+  <!-- Iron tire -->
+  <circle cx="-48" cy="120" r="40" fill="none" stroke="#3a3020" stroke-width="3.5" opacity="0.7"/>
+
+  <!-- === CANNONBALLS (stacked pyramid by wheels) === -->
+  <circle cx="78"  cy="150" r="15" fill="#363028" stroke="#524a38" stroke-width="2"/>
+  <circle cx="106" cy="150" r="15" fill="#2e2820" stroke="#484030" stroke-width="2"/>
+  <circle cx="92"  cy="133" r="15" fill="#363028" stroke="#524a38" stroke-width="2"/>
+  <circle cx="122" cy="133" r="15" fill="#2e2820" stroke="#484030" stroke-width="2"/>
+  <circle cx="107" cy="116" r="15" fill="#363028" stroke="#524a38" stroke-width="2"/>
+  <!-- Ball highlights -->
+  <circle cx="74"  cy="144" r="5"  fill="#686050" opacity="0.50"/>
+  <circle cx="102" cy="144" r="5"  fill="#585048" opacity="0.45"/>
+  <circle cx="88"  cy="127" r="5"  fill="#686050" opacity="0.50"/>
+
+  <!-- Ground shadow -->
+  <ellipse cx="30" cy="165" rx="155" ry="12" fill="#000000" opacity="0.38"/>
+</g>
+
+<!-- == SHIELD BOTTOM DIVIDER LINE  == -->
+<line x1="382" y1="758" x2="818" y2="758" stroke="#e07010" stroke-width="2.5" opacity="0.72"/>
+
+<!-- SHIELD inner text — SHIELD in small caps -->
+<text x="600" y="800"
+      font-family="Georgia, 'Times New Roman', serif"
+      font-size="22" font-weight="700"
+      fill="#e07010" text-anchor="middle" letter-spacing="4" opacity="0.60">⚡ · OGUN · ⚡</text>
+
+<!-- Small Ogun iron-cross symbol flanking SHIELD text -->
+<!-- Left -->
+<rect x="420" y="786" width="22" height="6"  rx="2" fill="#e07010" opacity="0.45"/>
+<rect x="428" y="778" width="6"  height="22" rx="2" fill="#e07010" opacity="0.45"/>
+<!-- Right -->
+<rect x="758" y="786" width="22" height="6"  rx="2" fill="#e07010" opacity="0.45"/>
+<rect x="766" y="778" width="6"  height="22" rx="2" fill="#e07010" opacity="0.45"/>
+
+<!-- Ogun symbol (anvil shape) at shield bottom inner point area -->
+<path d="M 572,826 L 600,840 L 628,826 L 620,812 L 580,812 Z" fill="#e07010" opacity="0.18"/>
+<path d="M 572,826 L 600,840 L 628,826 L 620,812 L 580,812 Z" fill="none" stroke="#e07010" stroke-width="1.5" opacity="0.40"/>
+
+<!-- == BOTTOM RIBBON  == -->
+<path d="M 390,886 Q 600,902 810,886 L 820,932 Q 600,948 380,932 Z"
+      fill="#0f0700" opacity="0.97"/>
+<path d="M 390,886 Q 600,902 810,886 L 820,932 Q 600,948 380,932 Z"
+      fill="none" stroke="#e07010" stroke-width="2.5" opacity="0.92"/>
+<!-- Left fold -->
+<path d="M 390,886 L 358,909 L 380,932 Z" fill="#080400" opacity="0.97"/>
+<path d="M 390,886 L 358,909 L 380,932 Z" fill="none" stroke="#e07010" stroke-width="1.8" opacity="0.75"/>
+<!-- Right fold -->
+<path d="M 810,886 L 842,909 L 820,932 Z" fill="#080400" opacity="0.97"/>
+<path d="M 810,886 L 842,909 L 820,932 Z" fill="none" stroke="#e07010" stroke-width="1.8" opacity="0.75"/>
+<!-- Bottom ribbon text -->
+<text x="600" y="923"
+      font-family="Georgia, 'Times New Roman', serif"
+      font-size="19" font-weight="700"
+      fill="#ff8800" text-anchor="middle" letter-spacing="5">TEN30 STUDIOS · EST. 2026</text>
+
+<!-- ================================================================ -->
+<!-- FINAL OVERLAYS                                                    -->
+<!-- ================================================================ -->
+
+<!-- Vignette (corners darken) -->
+<rect width="1200" height="1200" fill="url(#vignette)"/>
+
+<!-- Very subtle warm tint over whole image (unifies painting feel) -->
+<rect width="1200" height="1200" fill="#5a2000" opacity="0.08"/>
+
+</svg>

@@ -1,0 +1,390 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <defs>
+    <!-- Backgrounds & atmosphere -->
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#1a0d00"/>
+      <stop offset="60%" stop-color="#0a0805"/>
+      <stop offset="100%" stop-color="#050304"/>
+    </radialGradient>
+
+    <radialGradient id="fireAtmos" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#c45a00" stop-opacity="0.18"/>
+      <stop offset="40%" stop-color="#8b3a00" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="shieldGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff7c00" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#c45000" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="shieldFace" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1006"/>
+      <stop offset="50%" stop-color="#0d0900"/>
+      <stop offset="100%" stop-color="#0a0600"/>
+    </linearGradient>
+
+    <linearGradient id="axeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9a8a70"/>
+      <stop offset="40%" stop-color="#c8b48a"/>
+      <stop offset="100%" stop-color="#6b5c40"/>
+    </linearGradient>
+
+    <linearGradient id="spearGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d4c090"/>
+      <stop offset="30%" stop-color="#a89060"/>
+      <stop offset="100%" stop-color="#7a6640"/>
+    </linearGradient>
+
+    <linearGradient id="handleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4a2a10"/>
+      <stop offset="50%" stop-color="#6b4020"/>
+      <stop offset="100%" stop-color="#3a1a08"/>
+    </linearGradient>
+
+    <filter id="shieldGlowFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <filter id="chainGlow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <filter id="textGlow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <clipPath id="mainClip">
+      <rect width="1200" height="1200"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#mainClip)">
+
+  <!-- ═══ BACKGROUND ═══ -->
+  <rect width="1200" height="1200" fill="url(#bgGlow)"/>
+  <rect width="1200" height="1200" fill="url(#fireAtmos)"/>
+
+  <!-- Subtle grain texture lines -->
+  <g opacity="0.03" stroke="#ff8800" stroke-width="0.5">
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="400" x2="1200" y2="400"/>
+    <line x1="0" y1="600" x2="1200" y2="600"/>
+    <line x1="0" y1="800" x2="1200" y2="800"/>
+    <line x1="0" y1="1000" x2="1200" y2="1000"/>
+  </g>
+
+  <!-- ═══ ÀÁRẸ̀ ONA KAKANFÒ LATOOSA SILHOUETTE ═══ -->
+  <!-- Imposing Yoruba war chief — flowing agbada, war crown, staff — at 14% opacity -->
+  <g opacity="0.14" fill="#d4780a">
+
+    <!-- War crown / fila with plume -->
+    <ellipse cx="600" cy="108" rx="55" ry="22" fill="#c46000"/>
+    <rect x="560" y="88" width="80" height="25" rx="4"/>
+    <!-- Crown plume -->
+    <ellipse cx="600" cy="75" rx="12" ry="32"/>
+    <ellipse cx="588" cy="78" rx="8" ry="24" fill="#b05000"/>
+    <ellipse cx="612" cy="78" rx="8" ry="24" fill="#b05000"/>
+    <!-- Warrior bead crown details -->
+    <rect x="562" y="108" width="76" height="6" rx="2" fill="#a04000"/>
+
+    <!-- Head -->
+    <ellipse cx="600" cy="148" rx="42" ry="46"/>
+
+    <!-- Neck + broad shoulders -->
+    <rect x="580" y="188" width="40" height="25" rx="5"/>
+
+    <!-- Flowing agbada — massive outer robe billowing wide -->
+    <!-- Main agbada body - wide and imposing -->
+    <path d="M390,210 Q320,280 300,420 Q280,580 310,720 Q340,820 380,880 L440,880 Q420,760 415,640 Q440,520 460,440 Q480,380 520,320 L600,240 L680,320 Q720,380 740,440 Q760,520 785,640 Q780,760 760,880 L820,880 Q860,820 890,720 Q920,580 900,420 Q880,280 810,210 Q720,190 660,200 Q630,220 600,225 Q570,220 540,200 Q480,190 390,210 Z" fill="#b05000"/>
+
+    <!-- Inner robe / aso-oke layer -->
+    <path d="M480,215 Q440,270 430,380 Q420,500 440,620 Q460,720 480,820 L520,820 Q500,700 495,580 Q500,440 520,340 Q545,270 580,235 L620,235 Q655,270 680,340 Q700,440 705,580 Q700,700 680,820 L720,820 Q740,720 760,620 Q780,500 770,380 Q760,270 720,215 Q670,200 600,205 Q530,200 480,215 Z" fill="#c06010"/>
+
+    <!-- Agbada sleeve folds -->
+    <path d="M310,320 Q260,360 250,440 Q265,400 310,380" opacity="0.7"/>
+    <path d="M890,320 Q940,360 950,440 Q935,400 890,380" opacity="0.7"/>
+
+    <!-- War sash / belt area -->
+    <rect x="520" y="540" width="160" height="22" rx="4" fill="#8a3500"/>
+
+    <!-- Ada / sword hand - right arm extended with cutlass -->
+    <path d="M750,420 Q800,440 840,430 Q860,425 880,415 L870,400 Q850,408 830,415 Q800,420 760,405 Z"/>
+    <!-- Cutlass blade -->
+    <path d="M840,400 Q900,360 940,310 Q950,295 945,285 Q935,285 925,298 Q895,345 835,388 Z" fill="#c8b080"/>
+    <!-- Cutlass handle -->
+    <rect x="825" y="388" width="25" height="35" rx="4" fill="#5a3010"/>
+
+    <!-- Staff / left hand -->
+    <path d="M450,430 Q380,460 340,510 Q330,525 335,535 Q345,530 355,516 Q395,468 460,445 Z"/>
+    <!-- Staff shaft -->
+    <rect x="325" y="500" width="12" height="280" rx="6" fill="#7a4020" transform="rotate(-15, 331, 640)"/>
+    <!-- Staff tip ornament -->
+    <ellipse cx="278" cy="770" rx="15" ry="8" fill="#c8a060" transform="rotate(-15, 278, 770)"/>
+
+    <!-- Legs / lower garment -->
+    <path d="M530,820 Q520,900 510,1000 Q505,1060 508,1120 L560,1120 Q558,1060 555,1000 Q552,920 555,840 Z" fill="#9a4800"/>
+    <path d="M670,820 Q680,900 690,1000 Q695,1060 692,1120 L640,1120 Q642,1060 645,1000 Q648,920 645,840 Z" fill="#9a4800"/>
+
+    <!-- War beads / necklace -->
+    <circle cx="575" cy="200" r="7"/>
+    <circle cx="590" cy="196" r="7"/>
+    <circle cx="605" cy="195" r="7"/>
+    <circle cx="620" cy="196" r="7"/>
+    <circle cx="635" cy="200" r="7"/>
+    <circle cx="562" cy="207" r="6"/>
+    <circle cx="648" cy="207" r="6"/>
+
+    <!-- Ankle bangles (iron — Ogun's metal) -->
+    <rect x="502" y="1095" width="30" height="8" rx="4" fill="#8a7050"/>
+    <rect x="668" y="1095" width="30" height="8" rx="4" fill="#8a7050"/>
+
+  </g>
+
+  <!-- Ambient amber fire glow around figure -->
+  <ellipse cx="600" cy="600" rx="280" ry="480" fill="url(#fireAtmos)" opacity="0.6"/>
+
+  <!-- ═══ ÀÁRẸ̀ TITLE WATERMARK ═══ -->
+  <text x="600" y="1168" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+        font-size="19" letter-spacing="3" fill="#c46000" opacity="0.28"
+        font-style="italic">
+    Àárẹ̀ Ọ̀nà Kakanfò · Ibadan · 1871–1885
+  </text>
+
+  <!-- ═══ CROSSED WEAPONS BEHIND SHIELD ═══ -->
+
+  <!-- BATTLE AXE — upper-left crossing right -->
+  <g transform="rotate(-42, 600, 600)">
+    <!-- Handle -->
+    <rect x="320" y="575" width="22" height="340" rx="7" fill="url(#handleGrad)"/>
+    <!-- Handle binding wraps -->
+    <rect x="320" y="650" width="22" height="8" rx="2" fill="#8a6030"/>
+    <rect x="320" y="700" width="22" height="8" rx="2" fill="#8a6030"/>
+    <rect x="320" y="750" width="22" height="8" rx="2" fill="#8a6030"/>
+    <!-- Axe head — heavy crescent blade -->
+    <path d="M342,575 Q395,510 420,540 Q445,570 430,610 Q415,640 342,630 Z" fill="url(#axeGrad)"/>
+    <!-- Blade edge highlight -->
+    <path d="M342,575 Q395,510 420,540" stroke="#e8d4a0" stroke-width="2.5" fill="none" opacity="0.8"/>
+    <!-- Back spike -->
+    <path d="M342,595 Q295,590 285,608 Q295,622 342,615 Z" fill="url(#axeGrad)"/>
+    <!-- Iron rivets on axe head -->
+    <circle cx="370" cy="595" r="4" fill="#d4c090"/>
+    <circle cx="390" cy="580" r="3" fill="#d4c090"/>
+    <!-- Pommel cap -->
+    <ellipse cx="331" cy="915" rx="14" ry="8" fill="#8a7050"/>
+  </g>
+
+  <!-- IRON SPEAR — upper-right crossing left -->
+  <g transform="rotate(42, 600, 600)">
+    <!-- Shaft -->
+    <rect x="858" y="380" width="16" height="420" rx="5" fill="url(#handleGrad)"/>
+    <!-- Shaft ferrule bands -->
+    <rect x="858" y="470" width="16" height="9" rx="2" fill="#7a6040"/>
+    <rect x="858" y="560" width="16" height="9" rx="2" fill="#7a6040"/>
+    <!-- Leaf/lozenge spear tip — wide and menacing -->
+    <path d="M866,380 L835,290 Q838,250 866,228 Q894,250 897,290 L866,380 Z" fill="url(#spearGrad)"/>
+    <!-- Central ridge of spear tip -->
+    <line x1="866" y1="232" x2="866" y2="378" stroke="#e8d8a8" stroke-width="1.5" opacity="0.7"/>
+    <!-- Blood groove (fuller) -->
+    <path d="M858,270 Q862,250 866,235 Q870,250 874,270" stroke="#c8b080" stroke-width="1" fill="none" opacity="0.5"/>
+    <!-- Butt spike -->
+    <path d="M862,800 L858,840 L866,860 L874,840 L870,800 Z" fill="#9a8060"/>
+  </g>
+
+  <!-- ═══ SHIELD AMBIENT GLOW ═══ -->
+  <circle cx="600" cy="565" r="280" fill="url(#shieldGlow)"/>
+
+  <!-- ═══ IRON CHAIN LINKS — both sides ═══ -->
+  <!-- Left chain - 7 links descending -->
+  <g fill="none" stroke="#7a6540" stroke-width="6" filter="url(#chainGlow)">
+    <g opacity="0.75">
+      <!-- Link 1 -->
+      <ellipse cx="212" cy="340" rx="22" ry="13" transform="rotate(-20,212,340)"/>
+      <ellipse cx="212" cy="340" rx="13" ry="7" transform="rotate(-20,212,340)" stroke="#9a8560" stroke-width="3"/>
+      <!-- Link 2 -->
+      <ellipse cx="200" cy="385" rx="22" ry="13" transform="rotate(15,200,385)"/>
+      <ellipse cx="200" cy="385" rx="13" ry="7" transform="rotate(15,200,385)" stroke="#9a8560" stroke-width="3"/>
+      <!-- Link 3 -->
+      <ellipse cx="215" cy="430" rx="22" ry="13" transform="rotate(-10,215,430)"/>
+      <ellipse cx="215" cy="430" rx="13" ry="7" transform="rotate(-10,215,430)" stroke="#9a8560" stroke-width="3"/>
+      <!-- Link 4 -->
+      <ellipse cx="205" cy="475" rx="22" ry="13" transform="rotate(20,205,475)"/>
+      <ellipse cx="205" cy="475" rx="13" ry="7" transform="rotate(20,205,475)" stroke="#9a8560" stroke-width="3"/>
+      <!-- Link 5 -->
+      <ellipse cx="218" cy="520" rx="22" ry="13" transform="rotate(-5,218,520)"/>
+      <ellipse cx="218" cy="520" rx="13" ry="7" transform="rotate(-5,218,520)" stroke="#9a8560" stroke-width="3"/>
+      <!-- Link 6 -->
+      <ellipse cx="208" cy="565" rx="22" ry="13" transform="rotate(18,208,565)"/>
+      <ellipse cx="208" cy="565" rx="13" ry="7" transform="rotate(18,208,565)" stroke="#9a8560" stroke-width="3"/>
+      <!-- Link 7 -->
+      <ellipse cx="220" cy="610" rx="22" ry="13" transform="rotate(-12,220,610)"/>
+      <ellipse cx="220" cy="610" rx="13" ry="7" transform="rotate(-12,220,610)" stroke="#9a8560" stroke-width="3"/>
+    </g>
+
+    <!-- Right chain - 7 links -->
+    <g opacity="0.75">
+      <ellipse cx="988" cy="340" rx="22" ry="13" transform="rotate(20,988,340)"/>
+      <ellipse cx="988" cy="340" rx="13" ry="7" transform="rotate(20,988,340)" stroke="#9a8560" stroke-width="3"/>
+      <ellipse cx="1000" cy="385" rx="22" ry="13" transform="rotate(-15,1000,385)"/>
+      <ellipse cx="1000" cy="385" rx="13" ry="7" transform="rotate(-15,1000,385)" stroke="#9a8560" stroke-width="3"/>
+      <ellipse cx="985" cy="430" rx="22" ry="13" transform="rotate(10,985,430)"/>
+      <ellipse cx="985" cy="430" rx="13" ry="7" transform="rotate(10,985,430)" stroke="#9a8560" stroke-width="3"/>
+      <ellipse cx="995" cy="475" rx="22" ry="13" transform="rotate(-20,995,475)"/>
+      <ellipse cx="995" cy="475" rx="13" ry="7" transform="rotate(-20,995,475)" stroke="#9a8560" stroke-width="3"/>
+      <ellipse cx="982" cy="520" rx="22" ry="13" transform="rotate(5,982,520)"/>
+      <ellipse cx="982" cy="520" rx="13" ry="7" transform="rotate(5,982,520)" stroke="#9a8560" stroke-width="3"/>
+      <ellipse cx="992" cy="565" rx="22" ry="13" transform="rotate(-18,992,565)"/>
+      <ellipse cx="992" cy="565" rx="13" ry="7" transform="rotate(-18,992,565)" stroke="#9a8560" stroke-width="3"/>
+      <ellipse cx="980" cy="610" rx="22" ry="13" transform="rotate(12,980,610)"/>
+      <ellipse cx="980" cy="610" rx="13" ry="7" transform="rotate(12,980,610)" stroke="#9a8560" stroke-width="3"/>
+    </g>
+  </g>
+
+  <!-- ═══ THE SHIELD — Main element ═══ -->
+
+  <!-- Shield outer glow ring -->
+  <circle cx="600" cy="565" r="238" fill="none" stroke="#ff6600" stroke-width="3" opacity="0.20" filter="url(#softGlow)"/>
+  <circle cx="600" cy="565" r="228" fill="none" stroke="#ff7700" stroke-width="1.5" opacity="0.35"/>
+
+  <!-- Shield body — octagonal -->
+  <polygon points="600,338 772,415 832,565 772,715 600,792 428,715 368,565 428,415"
+           fill="url(#shieldFace)" stroke="#e8720a" stroke-width="3.5" filter="url(#shieldGlowFilter)"/>
+
+  <!-- Shield inner bevel -->
+  <polygon points="600,360 754,428 808,565 754,702 600,770 446,702 392,565 446,428"
+           fill="none" stroke="#ff8820" stroke-width="1.5" opacity="0.50"/>
+
+  <!-- Shield deep inner ring -->
+  <circle cx="600" cy="565" r="170" fill="none" stroke="#c45a00" stroke-width="1" opacity="0.40"/>
+
+  <!-- ═══ RADAR CROSSHAIRS ═══ -->
+  <!-- Outer radar ring -->
+  <circle cx="600" cy="565" r="155" fill="none" stroke="#ff7700" stroke-width="1.2" opacity="0.55"/>
+  <!-- Middle radar ring -->
+  <circle cx="600" cy="565" r="105" fill="none" stroke="#ff7700" stroke-width="1" opacity="0.45"/>
+  <!-- Inner radar ring -->
+  <circle cx="600" cy="565" r="58" fill="none" stroke="#ff9900" stroke-width="1.5" opacity="0.60"/>
+
+  <!-- Crosshair lines -->
+  <line x1="600" y1="370" x2="600" y2="760" stroke="#ff7700" stroke-width="1" opacity="0.40"/>
+  <line x1="405" y1="565" x2="795" y2="565" stroke="#ff7700" stroke-width="1" opacity="0.40"/>
+  <!-- Diagonal crosshairs -->
+  <line x1="462" y1="427" x2="738" y2="703" stroke="#ff7700" stroke-width="0.7" opacity="0.25"/>
+  <line x1="738" y1="427" x2="462" y2="703" stroke="#ff7700" stroke-width="0.7" opacity="0.25"/>
+
+  <!-- Radar sweep arc -->
+  <path d="M600,565 L600,415 A150,150 0 0,1 730,490 Z" fill="#ff8800" opacity="0.07"/>
+  <path d="M600,565 L600,415 A150,150 0 0,1 730,490" fill="none" stroke="#ff8800" stroke-width="1.5" opacity="0.35"/>
+
+  <!-- Center dot -->
+  <circle cx="600" cy="565" r="8" fill="#ff7700" opacity="0.85"/>
+  <circle cx="600" cy="565" r="4" fill="#ffaa00"/>
+
+  <!-- ═══ TERMINAL SCAN LINES on shield ═══ -->
+  <g font-family="'Courier New', Courier, monospace" font-size="11" fill="#ff8800" opacity="0.55" letter-spacing="0.5">
+    <text x="448" y="508">$ ogunscan shield --watch</text>
+    <text x="448" y="526" fill="#50cc50" opacity="0.65">✓ OGN-101  credential.exposed</text>
+    <text x="448" y="544" fill="#50cc50" opacity="0.55">✓ OGN-200  injection.risk</text>
+    <text x="448" y="562" fill="#ff6644" opacity="0.70">⚠ OGN-500  supply.chain</text>
+    <text x="448" y="580" fill="#50cc50" opacity="0.55">✓ OGN-301  server.origin</text>
+    <text x="448" y="598">monitoring  [████████░░] 82%</text>
+    <text x="448" y="616">next scan in  5h 47m 12s_</text>
+  </g>
+
+  <!-- ═══ OGUN SYMBOL — Center ═══ -->
+  <!-- Iron cross — Ogun's domain -->
+  <g opacity="0.22" stroke="#ff9900" stroke-width="2.5" fill="none">
+    <line x1="600" y1="520" x2="600" y2="610"/>
+    <line x1="555" y1="565" x2="645" y2="565"/>
+    <circle cx="600" cy="565" r="30"/>
+  </g>
+
+  <!-- ═══ PALM FRONDS at base ═══ -->
+  <!-- Left frond cluster — heavy, textured -->
+  <g opacity="0.55">
+    <!-- Main left frond -->
+    <path d="M340,920 Q280,870 240,810 Q255,815 290,850 Q320,880 350,905" fill="#2a4a15" stroke="#3a6020" stroke-width="1.5"/>
+    <path d="M340,920 Q260,900 210,860 Q225,860 268,885 Q305,905 342,918" fill="#2a4a15" stroke="#3a6020" stroke-width="1"/>
+    <path d="M340,920 Q300,940 255,950 Q275,942 310,935 Q325,930 340,920" fill="#2a4a15"/>
+    <!-- Palm frond spine details -->
+    <path d="M340,920 Q280,870 240,810" fill="none" stroke="#4a7030" stroke-width="2"/>
+    <!-- Frond leaflets -->
+    <path d="M265,845 Q255,835 248,820 Q258,830 268,840" fill="#3a6020" stroke="none"/>
+    <path d="M285,862 Q275,850 270,835 Q280,848 290,858" fill="#3a6020"/>
+    <path d="M305,878 Q295,867 292,852 Q302,864 310,876" fill="#3a6020"/>
+
+    <!-- Second left frond -->
+    <path d="M370,950 Q310,920 275,880 Q290,888 325,912 Q350,932 372,948" fill="#224010" stroke="#3a6020" stroke-width="1"/>
+    <path d="M370,950 Q320,960 278,968 Q298,960 335,958 Q355,954 370,950" fill="#224010"/>
+  </g>
+
+  <g opacity="0.55">
+    <!-- Right frond cluster -->
+    <path d="M860,920 Q920,870 960,810 Q945,815 910,850 Q880,880 850,905" fill="#2a4a15" stroke="#3a6020" stroke-width="1.5"/>
+    <path d="M860,920 Q940,900 990,860 Q975,860 932,885 Q895,905 858,918" fill="#2a4a15" stroke="#3a6020" stroke-width="1"/>
+    <path d="M860,920 Q900,940 945,950 Q925,942 890,935 Q875,930 860,920" fill="#2a4a15"/>
+    <path d="M860,920 Q920,870 960,810" fill="none" stroke="#4a7030" stroke-width="2"/>
+    <!-- Frond leaflets -->
+    <path d="M935,845 Q945,835 952,820 Q942,830 932,840" fill="#3a6020"/>
+    <path d="M915,862 Q925,850 930,835 Q920,848 910,858" fill="#3a6020"/>
+    <path d="M895,878 Q905,867 908,852 Q898,864 890,876" fill="#3a6020"/>
+
+    <!-- Second right frond -->
+    <path d="M830,950 Q890,920 925,880 Q910,888 875,912 Q850,932 828,948" fill="#224010" stroke="#3a6020" stroke-width="1"/>
+    <path d="M830,950 Q880,960 922,968 Q902,960 865,958 Q845,954 830,950" fill="#224010"/>
+  </g>
+
+  <!-- Center palm base / earth -->
+  <path d="M480,990 Q530,975 600,970 Q670,975 720,990 Q680,1000 600,1005 Q520,1000 480,990 Z" fill="#1a3008" opacity="0.40"/>
+
+  <!-- ═══ WORDMARK ═══ -->
+
+  <!-- OGUNSCAN — top -->
+  <text x="600" y="282" text-anchor="middle"
+        font-family="'Arial Black', 'Impact', 'Helvetica Neue', sans-serif"
+        font-size="68" font-weight="900" letter-spacing="8"
+        fill="#ff7700" filter="url(#textGlow)" opacity="0.92">OGUNSCAN</text>
+
+  <!-- Thin rule under OGUNSCAN -->
+  <line x1="350" y1="295" x2="850" y2="295" stroke="#ff7700" stroke-width="1.5" opacity="0.40"/>
+
+  <!-- SHIELD — below rule -->
+  <text x="600" y="332" text-anchor="middle"
+        font-family="'Arial Black', 'Impact', 'Helvetica Neue', sans-serif"
+        font-size="34" font-weight="900" letter-spacing="22"
+        fill="#c45a00" opacity="0.88">SHIELD</text>
+
+  <!-- Bottom wordmark / tagline -->
+  <text x="600" y="1068" text-anchor="middle"
+        font-family="'Courier New', Courier, monospace"
+        font-size="18" letter-spacing="4" fill="#9a6020" opacity="0.70">
+    MCP SECURITY · CONTINUOUS MONITORING
+  </text>
+
+  <!-- Ten30 Studios mark — bottom right corner -->
+  <text x="1155" y="1185" text-anchor="end"
+        font-family="'Arial', sans-serif" font-size="14"
+        letter-spacing="2" fill="#6a4010" opacity="0.45">
+    TEN30 STUDIOS
+  </text>
+
+  <!-- $9/mo badge — top right -->
+  <rect x="990" y="58" width="148" height="52" rx="8" fill="#1a0d00" stroke="#ff7700" stroke-width="2" opacity="0.88"/>
+  <text x="1064" y="82" text-anchor="middle"
+        font-family="'Arial Black', sans-serif" font-size="26" font-weight="900"
+        fill="#ff8800">$9</text>
+  <text x="1064" y="100" text-anchor="middle"
+        font-family="'Arial', sans-serif" font-size="13" letter-spacing="2"
+        fill="#c46000" opacity="0.80">per month</text>
+
+  </g>
+</svg>
