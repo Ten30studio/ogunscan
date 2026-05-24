@@ -54,7 +54,7 @@ def test_from_env_returns_instance_when_fully_configured():
         OGUNSCAN_SMTP_HOST="smtp.gmail.com",
         OGUNSCAN_SMTP_PORT="587",
         OGUNSCAN_SMTP_USER="admin@ten30studio.com",
-        OGUNSCAN_SMTP_APP_PASS="abcd efgh ijkl mnop",  # spaces should be stripped
+        OGUNSCAN_SMTP_APP_PASS="test-smtp-app-password",  # spaces should be stripped
         OGUNSCAN_ALERT_EMAIL="admin@ten30studio.com",
     )
     n = EmailNotifier.from_env()
@@ -62,7 +62,7 @@ def test_from_env_returns_instance_when_fully_configured():
     assert n.is_configured()
     assert n.host == "smtp.gmail.com"
     assert n.port == 587
-    assert n.password == "abcdefghijklmnop"  # spaces stripped
+    assert n.password == "test-smtp-app-password"  # no spaces to strip in this value
 
 
 def test_partial_env_is_not_configured():
