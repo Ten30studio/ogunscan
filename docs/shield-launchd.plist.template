@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  OgunScan Shield — launchd plist template (macOS).
+
+  This is a TEMPLATE. Use `ogunscan shield install-launchd` to generate
+  a working copy with your Python interpreter path baked in and load it
+  with launchctl. Do not edit this template directly.
+
+  After install:
+    launchctl load  ~/Library/LaunchAgents/dev.ogunscan.shield.plist
+    launchctl start dev.ogunscan.shield
+
+  To stop / unload:
+    launchctl stop   dev.ogunscan.shield
+    launchctl unload ~/Library/LaunchAgents/dev.ogunscan.shield.plist
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>dev.ogunscan.shield</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>{{PYTHON}}</string>
+    <string>-m</string>
+    <string>ogunscan.shield.daemon</string>
+  </array>
+
+  <!-- Run at load + auto-restart on crash -->
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+
+  <!-- 10s minimum between restart attempts (avoid tight loops on bad config) -->
+  <key>ThrottleInterval</key>
+  <integer>10</integer>
+
+  <!-- Logs at ~/.ogunscan/shield/logs/ -->
+  <key>StandardOutPath</key>
+  <string>{{HOME}}/.ogunscan/shield/logs/daemon.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>{{HOME}}/.ogunscan/shield/logs/daemon.err.log</string>
+
+  <!-- Inherit user environment for SMTP / Slack env vars set in shell config -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+  </dict>
+
+  <key>ProcessType</key>
+  <string>Background</string>
+</dict>
+</plist>

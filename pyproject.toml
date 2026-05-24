@@ -35,10 +35,16 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
+shield = [
+  # File watching for the Shield daemon (continuous monitoring tier).
+  # Free CLI users do not need this extra.
+  "watchdog>=3.0",
+]
 dev = [
   "pytest>=7.0",
   "build>=1.0",
   "twine>=4.0",
+  "watchdog>=3.0",  # required to run/test Shield code locally
 ]
 
 [project.urls]

@@ -4,6 +4,20 @@ All notable changes to OgunScan are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning follows [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+### Added (Shield internal — not on PyPI yet)
+- **`ogunscan.shield` package** (file watcher + scheduled scan + state + history + CLI). Phase 2 of the OgunScan Shield $9/mo continuous-monitoring tier build.
+- New CLI subcommands: `ogunscan shield {add,remove,status,scan-now,logs,stop,start,install-launchd,uninstall-launchd}`. Hidden from free-tier users by the license gate (Phase 4); functional today via `python -m ogunscan.shield.daemon`.
+- `watchdog>=3.0` declared as optional `[shield]` extra in pyproject. Free CLI install (`pip install ogunscan`) remains zero-dep.
+- macOS `launchd` plist template + `install-launchd` / `uninstall-launchd` CLI commands for unattended daemon supervision.
+- 28 new tests under `tests/shield/`: state persistence (atomic write, schema, idempotent register, roundtrip), history (append, tail, malformed-line skip, write-failure non-fatal), notifiers (abstract contract, stdout impl, registry), daemon integration (end-to-end alert fires within 10s on file change, force_scan, resolved_finding callback, unchanged-no-double-alert).
+
+### Operational
+- Shield daemon state at `~/.ogunscan/shield/` (state.json + history/*.jsonl + daemon.pid + logs/).
+- `OGUNSCAN_SHIELD_HOME` env override for testing + advanced users.
+- Daemon signals: SIGTERM → graceful stop, SIGUSR1 → force scan, SIGHUP → reload registered paths from state.json.
+
 ## [0.1.3] — 2026-05-24
 
 ### Added

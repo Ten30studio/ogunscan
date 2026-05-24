@@ -106,7 +106,7 @@ def cmd_version(args):
 
 
 def cli():
-    KNOWN_VERBS = {"scan", "rules", "version", "-h", "--help", "--version"}
+    KNOWN_VERBS = {"scan", "rules", "version", "shield", "-h", "--help", "--version"}
     argv = sys.argv[1:]
     if argv and argv[0] not in KNOWN_VERBS and not argv[0].startswith("-"):
         argv = ["scan"] + argv
@@ -136,5 +136,18 @@ def cli():
     p_version = sub.add_parser("version", help="Print version")
     p_version.set_defaults(func=cmd_version)
 
+    # Shield subcommands. Import lazily so a free-tier install without the
+    # `[shield]` extra (no watchdog) doesn't error at `ogunscan --help`.
+    try:
+        from .shield.cli import add_shield_subparser
+        add_shield_subparser(sub)
+    except ImportError:
+        # Shield deps not installed — `ogunscan shield ...` will surface a
+        # helpful error if invoked, but `ogunscan scan`/`rules`/`version`
+        # all still work.
+        pass
+
     args = parser.parse_args(argv)
-    args.func(args)
+    rc = args.func(args)
+    if isinstance(rc, int):
+        sys.exit(rc)
