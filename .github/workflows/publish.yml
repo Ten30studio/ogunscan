@@ -6,7 +6,7 @@ name: publish
 # https://pypi.org/manage/project/ogunscan/settings/publishing/
 #
 # To cut a release:
-#   1. Bump version in pyproject.toml + src/ogunscan.py
+#   1. Bump version in pyproject.toml + src/ogunscan/__init__.py
 #   2. Commit
 #   3. git tag v0.1.2 && git push origin v0.1.2
 #   This workflow builds + publishes automatically.
@@ -36,7 +36,7 @@ jobs:
         run: |
           TAG="${GITHUB_REF#refs/tags/v}"
           PYPROJECT_VERSION=$(grep -E '^version' pyproject.toml | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
-          MODULE_VERSION=$(grep -E "^__version__" src/ogunscan.py | sed -E "s/.*'([^']+)'.*/\1/")
+          MODULE_VERSION=$(grep -E "^__version__" src/ogunscan/__init__.py | sed -E "s/.*'([^']+)'.*/\1/")
           echo "tag=$TAG pyproject=$PYPROJECT_VERSION module=$MODULE_VERSION"
           if [ "$TAG" != "$PYPROJECT_VERSION" ] || [ "$TAG" != "$MODULE_VERSION" ]; then
             echo "::error::Tag v$TAG does not match pyproject ($PYPROJECT_VERSION) or module ($MODULE_VERSION) version"
