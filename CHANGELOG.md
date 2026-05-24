@@ -4,6 +4,36 @@ All notable changes to OgunScan are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning follows [SemVer](https://semver.org/).
 
+## [0.1.3] — 2026-05-24
+
+### Added
+- **Hot-updated rule signatures.** Detection rules now load from
+  `src/ogunscan/rules/builtin.json` (bundled) with optional refresh from
+  `https://ogunscan.dev/signatures/latest.json` (24h cache). Adding a new
+  credential or injection pattern no longer requires a release — push the
+  updated JSON, every install picks it up on the next scan.
+- **`ogunscan.signatures.load_signatures()`** — pure-stdlib loader with
+  the cache + network + builtin fallback chain. Foundation for the
+  upcoming Shield daemon.
+- **`ogunscan.diff.diff_findings()`** — compare two scans, get
+  `(new, resolved, unchanged)` buckets. Foundation for Shield's "alert on
+  new finding only" behavior.
+- `python -m ogunscan` entry point (via `src/ogunscan/__main__.py`).
+- 18 new tests: 9 for diff logic, 9 for signature loader (with mocked
+  network for offline determinism).
+
+### Changed
+- **Package layout: single module → package.** `src/ogunscan.py` →
+  `src/ogunscan/{__init__, models, engine, reporter, cli, diff, signatures, rules/}`.
+  CLI entry point unchanged (`ogunscan = "ogunscan:cli"`); public API
+  unchanged (`from ogunscan import OgunScanner, Severity, Finding, ScanResult, format_report`).
+- `pyproject.toml`: `py-modules` replaced with `[tool.setuptools.packages.find]`
+  + `[tool.setuptools.package-data]` to ship `rules/builtin.json`.
+
+### Operational
+- New endpoint live: `https://ogunscan.dev/signatures/latest.json` —
+  seeded with the same 8 rules + pattern data shipped in the package.
+
 ## [0.1.2] — 2026-05-23
 
 ### Changed

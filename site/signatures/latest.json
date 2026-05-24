@@ -1,0 +1,107 @@
+{
+  "version": "2026.05.24-1",
+  "updated_at": "2026-05-24T03:10:00Z",
+  "rules": [
+    {
+      "id": "OGN-100",
+      "severity": "HIGH",
+      "title": "Suspicious server URL",
+      "description": "IPs, ngrok/tunnel hosts, free-TLD or .onion in server URL",
+      "remediation": "Use only verified, stable hostnames for MCP server URLs. Avoid IPs, free TLDs, and tunnel services."
+    },
+    {
+      "id": "OGN-101",
+      "severity": "CRITICAL",
+      "title": "Unencrypted remote server",
+      "description": "Remote MCP server using HTTP instead of HTTPS",
+      "remediation": "Switch to HTTPS. Never use HTTP for remote MCP servers."
+    },
+    {
+      "id": "OGN-200",
+      "severity": "CRITICAL",
+      "title": "Hardcoded credential in env",
+      "description": "API key / token / private-key material in server env config",
+      "remediation": "Move credentials to environment variables or a secrets manager. Never hardcode tokens in MCP config files."
+    },
+    {
+      "id": "OGN-201",
+      "severity": "CRITICAL",
+      "title": "Credential in command args",
+      "description": "Token passed via CLI args — visible in process listings",
+      "remediation": "Use environment variables instead of command-line arguments for credentials."
+    },
+    {
+      "id": "OGN-202",
+      "severity": "CRITICAL",
+      "title": "Credential pattern in file",
+      "description": "Token pattern detected in raw config file outside structured fields",
+      "remediation": "Remove credentials from config files. Use environment variables or a secrets manager."
+    },
+    {
+      "id": "OGN-300",
+      "severity": "CRITICAL",
+      "title": "Prompt injection in tool desc",
+      "description": "Injection patterns in tool descriptions hijack agent behavior",
+      "remediation": "Audit tool descriptions for injected instructions. Only use MCP servers from trusted sources."
+    },
+    {
+      "id": "OGN-400",
+      "severity": "HIGH",
+      "title": "Dangerous permission granted",
+      "description": "Server requests a high-risk capability (shell_exec, admin, sudo, ...)",
+      "remediation": "Apply least-privilege. Only grant permissions explicitly required by the server."
+    },
+    {
+      "id": "OGN-500",
+      "severity": "MEDIUM",
+      "title": "Unverified package server",
+      "description": "Unpinned npx/uvx/pip command — supply-chain attack surface",
+      "remediation": "Pin exact package versions (e.g., npx package@1.2.3). Verify checksums. Review package source before use."
+    }
+  ],
+  "patterns": {
+    "credentials": [
+      {"regex": "sk-[a-zA-Z0-9]{32,}",                                                              "label": "OpenAI API key",            "raw_scan": true},
+      {"regex": "sk-ant-[a-zA-Z0-9\\-]{32,}",                                                       "label": "Anthropic API key",         "raw_scan": true},
+      {"regex": "AIza[0-9A-Za-z\\-_]{35}",                                                          "label": "Google API key",            "raw_scan": true},
+      {"regex": "ghp_[a-zA-Z0-9]{36}",                                                              "label": "GitHub personal access token", "raw_scan": true},
+      {"regex": "ghs_[a-zA-Z0-9]{36}",                                                              "label": "GitHub Actions token",      "raw_scan": true},
+      {"regex": "xoxb-[0-9]{11,13}-[0-9]{11,13}-[a-zA-Z0-9]{24}",                                   "label": "Slack bot token",           "raw_scan": true},
+      {"regex": "xoxp-[0-9]{11,13}-[0-9]{11,13}-[0-9]{11,13}-[a-zA-Z0-9]{32}",                      "label": "Slack user token",          "raw_scan": true},
+      {"regex": "AKIA[0-9A-Z]{16}",                                                                 "label": "AWS access key ID",         "raw_scan": true},
+      {"regex": "(?i)(password|passwd|secret|token|api_key|apikey)\\s*[:=]\\s*[\"']?([^\\s\"']{8,})", "label": "Hardcoded credential",      "raw_scan": false},
+      {"regex": "(?i)bearer\\s+[a-zA-Z0-9\\-_\\.]{20,}",                                            "label": "Bearer token in config",    "raw_scan": false},
+      {"regex": "-----BEGIN (?:RSA |EC )?PRIVATE KEY-----",                                         "label": "Private key material",      "raw_scan": false}
+    ],
+    "injection": [
+      {"regex": "ignore (?:previous|all|prior) instructions?",          "label": "Ignore-previous-instructions injection"},
+      {"regex": "you are now",                                          "label": "Role override injection"},
+      {"regex": "disregard (?:all|your|the) (?:previous|prior|above)",  "label": "Disregard injection"},
+      {"regex": "act as (?:a|an|the)\\s+\\w+\\s+(?:without|that|who)",  "label": "Act-as injection"},
+      {"regex": "do not (?:reveal|tell|show|mention|disclose)",         "label": "Information suppression directive"},
+      {"regex": "system\\s*:\\s*you",                                   "label": "Embedded system prompt"},
+      {"regex": "<\\|(?:im_start|system|user|assistant)\\|>",           "label": "ChatML injection tokens"},
+      {"regex": "\\[INST\\]|\\[/INST\\]",                               "label": "Llama instruction injection tokens"},
+      {"regex": "###\\s*(?:instruction|system|context)s?",              "label": "Markdown-wrapped system prompt"},
+      {"regex": "exfiltrate|extract (?:all|the|user|secret)",           "label": "Data exfiltration directive"}
+    ],
+    "suspicious_urls": [
+      {"regex": "https?://(?:\\d{1,3}\\.){3}\\d{1,3}(?::\\d+)?",        "label": "Direct IP URL (no hostname)"},
+      {"regex": "https?://(?:localhost|127\\.0\\.0\\.1|0\\.0\\.0\\.0)", "label": "Localhost URL in server config"},
+      {"regex": "https?://[^/]+\\.(?:tk|ml|ga|cf|gq)/",                 "label": "Free TLD (high-abuse domain)"},
+      {"regex": "ngrok\\.io|ngrok\\.app",                               "label": "Ngrok tunnel URL (ephemeral, unverified)"},
+      {"regex": "trycloudflare\\.com",                                  "label": "Cloudflare tunnel URL"},
+      {"regex": "\\.onion",                                             "label": "Tor hidden service URL"}
+    ],
+    "dangerous_permissions": [
+      "execute_code",
+      "shell_exec",
+      "file_write",
+      "file_delete",
+      "network_unrestricted",
+      "admin",
+      "sudo",
+      "root"
+    ]
+  }
+}
