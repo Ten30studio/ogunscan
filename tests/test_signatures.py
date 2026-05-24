@@ -156,11 +156,17 @@ def test_cache_write_atomicity_failure_is_noisy_but_nonfatal():
 
 
 def test_load_builtin_is_always_callable():
-    """The bundled fallback must load without error from the package data."""
+    """The bundled fallback must load without error from the package data.
+    Phase 5 added 5 remote-scan rules (OGN-600..604) bringing total to 13;
+    this test asserts the bundled count keeps tracking what we ship."""
     builtin = load_builtin()
     assert "rules" in builtin
-    assert len(builtin["rules"]) == 8
-    assert builtin["rules"][0]["id"] == "OGN-100"
+    assert len(builtin["rules"]) == 13
+    rule_ids = {r["id"] for r in builtin["rules"]}
+    # Local-config rules (Phase 1)
+    assert {"OGN-100", "OGN-101", "OGN-200", "OGN-201", "OGN-202", "OGN-300", "OGN-400", "OGN-500"}.issubset(rule_ids)
+    # Remote-scan rules (Phase 5)
+    assert {"OGN-600", "OGN-601", "OGN-602", "OGN-603", "OGN-604"}.issubset(rule_ids)
 
 
 if __name__ == "__main__":

@@ -7,6 +7,16 @@ versioning follows [SemVer](https://semver.org/).
 ## [Unreleased]
 
 ### Added (Shield internal — not on PyPI yet)
+- **Phase 5: remote endpoint scanning + GitHub Actions + SARIF output.**
+  - `src/ogunscan/shield/remote.py` — TLS cert expiry check (14-day warn window), HTTPS-not-HTTP detection, response-header disclosure analysis (Server, X-Powered-By, X-AspNet-Version, etc.), HTTP status probing. Pure stdlib (urllib + ssl + socket).
+  - **5 new rules**: OGN-600 (cert expiring), OGN-601 (cert expired), OGN-602 (HTTP not HTTPS), OGN-603 (unreachable / non-200), OGN-604 (response header discloses software identity). Rules schema bumped: `category` field distinguishes `local` vs `remote`. Bundled `builtin.json` + live `ogunscan.dev/signatures/latest.json` now ship 13 rules total.
+  - **State schema v2** (auto-migrates from v1): `registered_remotes: [{url, name}]` + `findings_by_remote: {url: [findings]}`.
+  - Daemon scan loop probes registered remotes on each scheduled / forced scan (not on file change — there's no file). Findings flow through the same diff + notifier pipeline as local findings.
+  - CLI: `ogunscan shield add --remote <url> <name>` / `ogunscan shield remove --remote <url>` / `status` shows remote endpoints + their finding counts.
+  - `src/ogunscan/sarif.py` — SARIF 2.1.0 emitter. `ogunscan scan --sarif` emits the schema GitHub's `codeql-action/upload-sarif@v3` consumes natively. Severity maps: CRITICAL/HIGH → SARIF `error`, MEDIUM → `warning`, LOW → `note`. Local findings get `physicalLocation`, remote findings get `logicalLocations`. Custom `ogunscan_severity` property preserves the CRITICAL/HIGH distinction (both become SARIF `error`).
+  - `.github/workflows/shield-scan.yml` — reusable workflow customers reference as `uses: Ten30studio/ogunscan/.github/workflows/shield-scan.yml@main`. Installs ogunscan, runs scan with `--sarif`, uploads to GitHub Security tab via codeql-action, fails on threshold (default HIGH). No license key required — CI integration is the free usage hook.
+  - 29 new tests: 13 remote (TLS cert paths, HTTP detection, header disclosure, status, identity), 16 SARIF (schema shape, severity mapping, local vs remote location handling).
+  - 118/118 tests across the codebase.
 - **Phase 4 license gate** — Gumroad license-key verification with 24h cache + offline tolerance.
   - `ogunscan shield activate <license-key>` — verify with Gumroad, persist key (chmod 600), cache verification.
   - `ogunscan shield deactivate` — stop daemon, remove key + cache.

@@ -32,33 +32,42 @@ from typing import Any, Dict, Iterable, List, Optional
 from ..models import Finding, Severity
 from .paths import ensure_dirs, state_file
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2  # v2 adds registered_remotes + findings_by_remote (Phase 5)
+SUPPORTED_SCHEMAS = {1, 2}
 
 
 def empty_state() -> Dict[str, Any]:
     return {
         "schema_version": SCHEMA_VERSION,
         "registered_paths": [],
+        "registered_remotes": [],  # [{"url": "...", "name": "..."}]
         "last_scan_at": None,
         "next_scan_at": None,
         "findings_by_path": {},
+        "findings_by_remote": {},  # keyed by url
         "scan_count": 0,
     }
 
 
 def load_state(path: Optional[Path] = None) -> Dict[str, Any]:
-    """Read state. Returns empty_state() if file missing or unreadable."""
+    """Read state. Auto-migrates v1 → v2. Returns empty_state() if file
+    missing, unreadable, or schema unrecognised."""
     p = path or state_file()
     try:
         if not p.exists():
             return empty_state()
         data = json.loads(p.read_text(encoding="utf-8"))
-        if not isinstance(data, dict) or data.get("schema_version") != SCHEMA_VERSION:
-            # Unknown schema — start fresh rather than corrupt
+        if not isinstance(data, dict):
             return empty_state()
-        # Defensive defaults for any field a future schema might have added
+        sv = data.get("schema_version")
+        if sv not in SUPPORTED_SCHEMAS:
+            return empty_state()
+        # Merge into v2 shape — adds the new fields (registered_remotes,
+        # findings_by_remote) without dropping anything the existing
+        # state has. This is the auto-migration path for v1 -> v2.
         merged = empty_state()
         merged.update(data)
+        merged["schema_version"] = SCHEMA_VERSION
         return merged
     except (json.JSONDecodeError, OSError):
         return empty_state()
@@ -118,6 +127,42 @@ def set_findings(state: Dict[str, Any], abs_path: str, findings: Iterable[Findin
     """Replace stored findings for one path."""
     bucket = state.setdefault("findings_by_path", {})
     bucket[abs_path] = [_finding_to_dict(f) for f in findings]
+
+
+# ── remote endpoint API (Phase 5) ────────────────────────────────────────
+
+
+def register_remote(state: Dict[str, Any], url: str, name: str) -> bool:
+    """Add a remote endpoint. Returns True if newly added, False if the
+    URL was already registered. Updates the friendly name if the URL was
+    already present with a different name."""
+    remotes = state.setdefault("registered_remotes", [])
+    for r in remotes:
+        if r.get("url") == url:
+            if r.get("name") != name:
+                r["name"] = name
+            return False
+    remotes.append({"url": url, "name": name})
+    remotes.sort(key=lambda r: r.get("url", ""))
+    return True
+
+
+def unregister_remote(state: Dict[str, Any], url: str) -> bool:
+    remotes = state.setdefault("registered_remotes", [])
+    before = len(remotes)
+    state["registered_remotes"] = [r for r in remotes if r.get("url") != url]
+    state.get("findings_by_remote", {}).pop(url, None)
+    return len(state["registered_remotes"]) < before
+
+
+def get_remote_findings(state: Dict[str, Any], url: str) -> List[Finding]:
+    serialized = state.get("findings_by_remote", {}).get(url, [])
+    return [_finding_from_dict(d) for d in serialized]
+
+
+def set_remote_findings(state: Dict[str, Any], url: str, findings: Iterable[Finding]) -> None:
+    bucket = state.setdefault("findings_by_remote", {})
+    bucket[url] = [_finding_to_dict(f) for f in findings]
 
 
 def mark_scan_complete(state: Dict[str, Any], at: datetime, next_at: datetime) -> None:

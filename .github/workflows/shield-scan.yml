@@ -1,0 +1,116 @@
+# OgunScan Shield — reusable scan workflow for CI.
+#
+# This workflow is FREE — no license key required. CI integration is a
+# usage hook, not a paid feature.
+#
+# Customers reference it from their own repo's workflow like:
+#
+#   jobs:
+#     mcp-security:
+#       uses: Ten30studio/ogunscan/.github/workflows/shield-scan.yml@main
+#       with:
+#         paths: '.mcp/'           # directory to scan recursively
+#         fail-on: 'high'          # critical | high | medium | low
+#       permissions:
+#         contents: read
+#         security-events: write   # required for the SARIF upload step
+
+name: OgunScan Shield Scan
+
+on:
+  workflow_call:
+    inputs:
+      paths:
+        description: 'Path or glob to scan (default: current directory, recursive)'
+        required: false
+        type: string
+        default: '.'
+      fail-on:
+        description: 'Minimum severity that fails the job (critical | high | medium | low)'
+        required: false
+        type: string
+        default: 'high'
+      ogunscan-version:
+        description: 'Pin OgunScan version (default: latest)'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install OgunScan
+        run: |
+          if [ -n "${{ inputs.ogunscan-version }}" ]; then
+            pip install "ogunscan==${{ inputs.ogunscan-version }}"
+          else
+            pip install ogunscan
+          fi
+          ogunscan --version
+
+      - name: Run OgunScan (SARIF output)
+        id: scan
+        continue-on-error: true
+        run: |
+          ogunscan scan ${{ inputs.paths }} --recursive --sarif > ogunscan.sarif
+          echo "sarif_path=ogunscan.sarif" >> "$GITHUB_OUTPUT"
+
+      - name: Upload SARIF to GitHub Security tab
+        if: always() && hashFiles('ogunscan.sarif') != ''
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ogunscan.sarif
+          category: ogunscan-shield
+
+      - name: Upload SARIF as workflow artifact
+        if: always() && hashFiles('ogunscan.sarif') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ogunscan-sarif
+          path: ogunscan.sarif
+
+      - name: Fail on findings at or above threshold
+        if: always()
+        env:
+          THRESHOLD: ${{ inputs.fail-on }}
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          threshold = os.environ.get("THRESHOLD", "high").lower()
+          severity_rank = {"critical": 4, "high": 3, "medium": 2, "low": 1, "none": 0}
+          fail_at = severity_rank.get(threshold, 3)
+          try:
+              with open("ogunscan.sarif") as f:
+                  data = json.load(f)
+          except FileNotFoundError:
+              print("No SARIF output found — scan likely failed before producing results.")
+              sys.exit(1)
+          # SARIF levels -> rank
+          sarif_to_rank = {"error": 4, "warning": 2, "note": 1, "none": 0}
+          # But OGN-HIGH also maps to SARIF "error" — disambiguate via our property
+          findings = []
+          for run in data.get("runs", []):
+              for r in run.get("results", []):
+                  ogn_sev = r.get("properties", {}).get("ogunscan_severity", "").lower()
+                  rank = severity_rank.get(ogn_sev, sarif_to_rank.get(r.get("level"), 0))
+                  findings.append((rank, r.get("ruleId"), r.get("level"), ogn_sev))
+          fail = [f for f in findings if f[0] >= fail_at]
+          print(f"Total findings: {len(findings)} | Failing (>= {threshold}): {len(fail)}")
+          for rank, rule, level, sev in fail[:20]:
+              print(f"  [{sev.upper() if sev else level}] {rule}")
+          if fail:
+              sys.exit(1)
+          sys.exit(0)
+          PY

@@ -34,6 +34,7 @@ from .notifiers import auto_wire_from_env
 from .notifiers.base import Notifier
 from .notifiers.stdout import StdoutNotifier
 from .paths import ensure_dirs, pid_file, state_file
+from .remote import probe_endpoint
 from .watcher import ShieldWatcher
 
 
@@ -164,6 +165,25 @@ class ShieldDaemon:
             history.record("path_removed", path=canon)
         return removed
 
+    def add_remote(self, url: str, name: str) -> bool:
+        """Register a remote endpoint. Returns True if newly added.
+        Remotes are probed on scheduled scans (not file change — no file).
+        Triggers an immediate probe so the customer sees coverage right away."""
+        added = state.register_remote(self._state, url, name)
+        if added:
+            state.save_state(self._state)
+            history.record("remote_added", url=url, name=name)
+            # Probe immediately so the customer sees coverage on `status`
+            self._scan_one_remote(url, name)
+        return added
+
+    def remove_remote(self, url: str) -> bool:
+        removed = state.unregister_remote(self._state, url)
+        if removed:
+            state.save_state(self._state)
+            history.record("remote_removed", url=url)
+        return removed
+
     # ── internals ─────────────────────────────────────────────────────────
 
     def _on_file_change(self, path: str) -> None:
@@ -220,9 +240,50 @@ class ShieldDaemon:
 
     def _scan_all(self) -> None:
         paths = list(self._state.get("registered_paths", []))
-        history.record("scan_started", paths=len(paths))
+        remotes = list(self._state.get("registered_remotes", []))
+        history.record("scan_started", paths=len(paths), remotes=len(remotes))
         for p in paths:
             self._scan_one(p)
+        for r in remotes:
+            self._scan_one_remote(r.get("url", ""), r.get("name", ""))
+
+    def _scan_one_remote(self, url: str, name: str) -> None:
+        """Probe one remote endpoint, diff against stored findings, emit alerts."""
+        if not url:
+            return
+        try:
+            current = probe_endpoint(url, name=name)
+        except Exception as e:
+            history.record("error", where="remote_probe", url=url, error=str(e))
+            return
+        previous = state.get_remote_findings(self._state, url)
+        d = diff_findings(previous, current)
+
+        scan_label = name or url
+        for f in d.new:
+            for n in self.notifiers:
+                n.notify_new(f, scan_label)
+            history.record(
+                "new_finding", remote=url, name=name,
+                rule_id=f.rule_id, severity=f.severity.value,
+                location=f.location, title=f.title,
+            )
+        for f in d.resolved:
+            for n in self.notifiers:
+                n.notify_resolved(f, scan_label)
+            history.record(
+                "resolved_finding", remote=url, name=name,
+                rule_id=f.rule_id, location=f.location,
+            )
+        for n in self.notifiers:
+            n.notify_scan_summary(scan_label, len(d.new), len(d.resolved), len(d.unchanged))
+
+        state.set_remote_findings(self._state, url, current)
+        state.save_state(self._state)
+        history.record(
+            "scan_completed", remote=url, name=name,
+            new=len(d.new), resolved=len(d.resolved), unchanged=len(d.unchanged),
+        )
 
     # ── signal + PID handling ─────────────────────────────────────────────
 

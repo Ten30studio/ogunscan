@@ -1,6 +1,6 @@
 {
-  "version": "2026.05.24-1",
-  "updated_at": "2026-05-24T03:10:00Z",
+  "version": "2026.05.24-2",
+  "updated_at": "2026-05-24T21:15:00Z",
   "rules": [
     {
       "id": "OGN-100",
@@ -57,6 +57,46 @@
       "title": "Unverified package server",
       "description": "Unpinned npx/uvx/pip command — supply-chain attack surface",
       "remediation": "Pin exact package versions (e.g., npx package@1.2.3). Verify checksums. Review package source before use."
+    },
+    {
+      "id": "OGN-600",
+      "severity": "HIGH",
+      "title": "TLS certificate expiring soon",
+      "description": "Remote MCP server's TLS certificate expires within 14 days",
+      "remediation": "Renew the TLS certificate before it expires. Use Let's Encrypt + auto-renewal so this doesn't recur.",
+      "category": "remote"
+    },
+    {
+      "id": "OGN-601",
+      "severity": "CRITICAL",
+      "title": "TLS certificate expired",
+      "description": "Remote MCP server's TLS certificate is expired or fails verification",
+      "remediation": "Renew the TLS certificate immediately. Configure auto-renewal (Let's Encrypt + certbot / caddy).",
+      "category": "remote"
+    },
+    {
+      "id": "OGN-602",
+      "severity": "CRITICAL",
+      "title": "Remote endpoint serves HTTP",
+      "description": "Remote MCP endpoint uses HTTP — all traffic, including credentials, is observable on the network path",
+      "remediation": "Migrate the endpoint to HTTPS. Never run remote MCP over HTTP, even on 'internal' networks.",
+      "category": "remote"
+    },
+    {
+      "id": "OGN-603",
+      "severity": "HIGH",
+      "title": "Remote endpoint unreachable or failing",
+      "description": "Remote MCP server returns a non-success HTTP status or is unreachable",
+      "remediation": "Check server logs, DNS, firewall, and TLS configuration. A consistently failing MCP endpoint is unusable.",
+      "category": "remote"
+    },
+    {
+      "id": "OGN-604",
+      "severity": "MEDIUM",
+      "title": "Response header discloses software identity",
+      "description": "Response headers (Server, X-Powered-By, etc.) reveal software versions that make CVE-targeted attacks easier",
+      "remediation": "Configure the server to omit or sanitize disclosure headers. nginx: server_tokens off; — apache: ServerTokens Prod + ServerSignature Off — express.js: app.disable('x-powered-by').",
+      "category": "remote"
     }
   ],
   "patterns": {

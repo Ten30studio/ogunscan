@@ -60,7 +60,31 @@ def _abs(path: str) -> str:
 
 
 def cmd_shield_add(args: argparse.Namespace) -> int:
-    abs_path = _abs(args.path)
+    if args.remote:
+        if not args.name:
+            print("--remote requires both <url> and <name>: "
+                  "ogunscan shield add --remote <url> <name>", file=sys.stderr)
+            return 1
+        url = args.target
+        name = args.name
+        s = state.load_state()
+        added = state.register_remote(s, url, name)
+        if not added:
+            print(f"Already registered: {url}", file=sys.stderr)
+            return 0
+        state.save_state(s)
+        pid = _read_pid()
+        if pid:
+            _signal_daemon(signal.SIGHUP)
+            history.record("remote_added", url=url, name=name, via="cli", daemon_pid=pid)
+            print(f"Registered remote: {name} ({url})  (live — daemon pid {pid} reloaded)")
+        else:
+            history.record("remote_added", url=url, name=name, via="cli", daemon_pid=None)
+            print(f"Registered remote: {name} ({url})  (daemon not running — will probe on next start)")
+        return 0
+
+    # Local path mode (the default)
+    abs_path = _abs(args.target)
     s = state.load_state()
     added = state.register_path(s, abs_path)
     if not added:
@@ -79,7 +103,25 @@ def cmd_shield_add(args: argparse.Namespace) -> int:
 
 
 def cmd_shield_remove(args: argparse.Namespace) -> int:
-    abs_path = _abs(args.path)
+    if args.remote:
+        url = args.target
+        s = state.load_state()
+        removed = state.unregister_remote(s, url)
+        if not removed:
+            print(f"Not registered: {url}", file=sys.stderr)
+            return 1
+        state.save_state(s)
+        pid = _read_pid()
+        if pid:
+            _signal_daemon(signal.SIGHUP)
+            history.record("remote_removed", url=url, via="cli", daemon_pid=pid)
+            print(f"Unregistered remote: {url}  (live — daemon pid {pid} reloaded)")
+        else:
+            history.record("remote_removed", url=url, via="cli", daemon_pid=None)
+            print(f"Unregistered remote: {url}")
+        return 0
+
+    abs_path = _abs(args.target)
     s = state.load_state()
     removed = state.unregister_path(s, abs_path)
     if not removed:
@@ -101,14 +143,27 @@ def cmd_shield_status(args: argparse.Namespace) -> int:
     s = state.load_state()
     pid = _read_pid()
     paths = s.get("registered_paths", [])
+    remotes = s.get("registered_remotes", [])
     print("⚔️  OgunScan Shield — status")
     print(f"   Daemon:       {'running (pid ' + str(pid) + ')' if pid else 'not running'}")
-    print(f"   Registered:   {len(paths)} path(s)")
+    print(f"   Local paths:  {len(paths)}")
     for p in paths:
         existing = "✓" if Path(p).exists() else "✗ missing"
         findings = s.get("findings_by_path", {}).get(p, [])
         sev_counts = _severity_counts(findings)
         print(f"     {existing}  {p}")
+        if findings:
+            crit = sev_counts.get("CRITICAL", 0)
+            high = sev_counts.get("HIGH", 0)
+            med = sev_counts.get("MEDIUM", 0)
+            print(f"            findings: CRITICAL:{crit} HIGH:{high} MEDIUM:{med}")
+    print(f"   Remotes:      {len(remotes)}")
+    for r in remotes:
+        url = r.get("url", "")
+        name = r.get("name", "")
+        findings = s.get("findings_by_remote", {}).get(url, [])
+        sev_counts = _severity_counts(findings)
+        print(f"     ◉  {name}  →  {url}")
         if findings:
             crit = sev_counts.get("CRITICAL", 0)
             high = sev_counts.get("HIGH", 0)
@@ -310,12 +365,18 @@ def add_shield_subparser(sub) -> None:
     p_shield = sub.add_parser("shield", help="Continuous monitoring + alerts (Shield tier)")
     shield_sub = p_shield.add_subparsers(dest="shield_cmd", required=True, metavar="<command>")
 
-    p_add = shield_sub.add_parser("add", help="Register an MCP config path to watch")
-    p_add.add_argument("path", help="Path to MCP config file")
+    p_add = shield_sub.add_parser("add", help="Register an MCP config path or remote endpoint to watch")
+    p_add.add_argument("--remote", action="store_true",
+                       help="Register a remote MCP endpoint URL instead of a local file path")
+    p_add.add_argument("target", help="Path to MCP config file, or remote URL when --remote is set")
+    p_add.add_argument("name", nargs="?", default=None,
+                       help="(--remote only) friendly name for the endpoint")
     p_add.set_defaults(func=cmd_shield_add)
 
-    p_rm = shield_sub.add_parser("remove", help="Unregister a watched path")
-    p_rm.add_argument("path", help="Path to unregister")
+    p_rm = shield_sub.add_parser("remove", help="Unregister a watched path or remote endpoint")
+    p_rm.add_argument("--remote", action="store_true",
+                      help="Unregister a remote URL instead of a local path")
+    p_rm.add_argument("target", help="Path or URL to unregister")
     p_rm.set_defaults(func=cmd_shield_remove)
 
     p_st = shield_sub.add_parser("status", help="Show Shield state")

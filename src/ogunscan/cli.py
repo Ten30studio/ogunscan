@@ -67,10 +67,14 @@ def cmd_scan(args):
         all_results.append(result)
         if result.critical or result.high:
             exit_code = 1
-        if not args.json:
+        # Only print the human report if NOT emitting structured output
+        if not args.json and not args.sarif:
             print(format_report(result, color=color))
 
-    if args.json:
+    if args.sarif:
+        from .sarif import to_sarif
+        print(json.dumps(to_sarif(all_results), indent=2))
+    elif args.json:
         def to_dict(obj):
             if dataclasses.is_dataclass(obj) and not isinstance(obj, type):
                 return {f.name: to_dict(getattr(obj, f.name)) for f in dataclasses.fields(obj)}
@@ -125,6 +129,8 @@ def cli():
     p_scan.add_argument("targets", nargs="*", help="Config file(s) or directory. Empty = auto-detect.")
     p_scan.add_argument("-r", "--recursive", action="store_true", help="Recurse into directories")
     p_scan.add_argument("-j", "--json", action="store_true", help="Emit JSON instead of human report")
+    p_scan.add_argument("--sarif", action="store_true",
+                        help="Emit SARIF 2.1.0 (for GitHub Security tab via codeql-action/upload-sarif)")
     p_scan.add_argument("--ignore", action="append", metavar="RULE",
                         help="Suppress a rule ID (repeatable, e.g. --ignore OGN-500)")
     p_scan.add_argument("--no-color", action="store_true", help="Disable color output")
