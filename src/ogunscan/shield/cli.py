@@ -239,22 +239,21 @@ def cmd_shield_start(args: argparse.Namespace) -> int:
 
 
 def cmd_shield_activate(args: argparse.Namespace) -> int:
-    """Verify a license key with Gumroad and persist it locally."""
+    """Activate this machine against a Lemon Squeezy license key and persist it."""
     key = args.key.strip()
     if not key:
         print("License key cannot be empty.", file=sys.stderr)
         return 1
-    status = _license.verify_license(license_key=key, force_refresh=True)
+    status = _license.activate_license(key)
     if not status.valid:
         print(f"⚠️  {status.message}", file=sys.stderr)
         return 2
-    _license.write_license_key(key)
     print(f"✓ License activated. {status.message}")
     if status.purchase:
         email = status.purchase.get("email", "")
-        sale_id = status.purchase.get("sale_id", "")
+        name = status.purchase.get("customer_name", "")
         if email:
-            print(f"  Purchase: {email}{' · sale ' + sale_id if sale_id else ''}")
+            print(f"  Purchase: {email}{' · ' + name if name else ''}")
     print()
     print("Next steps:")
     print("  ogunscan shield add ~/.cursor/mcp.json        # watch your MCP config")
@@ -264,26 +263,28 @@ def cmd_shield_activate(args: argparse.Namespace) -> int:
 
 
 def cmd_shield_deactivate(args: argparse.Namespace) -> int:
-    """Stop daemon (if running), then remove license key + cache."""
+    """Stop daemon (if running), release the seat with Lemon Squeezy, then
+    remove the local license key + cache + activation instance."""
     pid = _read_pid()
     if pid:
         _signal_daemon(signal.SIGTERM)
         deadline = time.time() + 5.0
         while time.time() < deadline and _read_pid():
             time.sleep(0.2)
-    _license.clear_license()
-    print("✓ License removed. Shield daemon stopped (if it was running).")
+    _license.deactivate_license()
+    print("✓ License deactivated (seat released) and removed locally. "
+          "Shield daemon stopped (if it was running).")
     return 0
 
 
 def cmd_shield_license(args: argparse.Namespace) -> int:
-    """Show current license status (offline cache + force-verify with Gumroad)."""
+    """Show current license status (offline cache + force-verify with Lemon Squeezy)."""
     status = _license.verify_license(force_refresh=args.refresh)
     label = "VALID" if status.valid else "INVALID"
     print(f"License: {label}  ({status.source})")
     print(f"  {status.message}")
     if status.purchase:
-        for k in ("email", "sale_id", "product_name", "created_at", "subscription_id"):
+        for k in ("email", "customer_name", "product_name", "status", "expires_at", "created_at"):
             if k in status.purchase:
                 print(f"  {k}: {status.purchase[k]}")
     return 0 if status.valid else 2
@@ -395,15 +396,15 @@ def add_shield_subparser(sub) -> None:
     p_start = shield_sub.add_parser("start", help="Start the daemon in the foreground (use launchd for unattended)")
     p_start.set_defaults(func=cmd_shield_start)
 
-    p_act = shield_sub.add_parser("activate", help="Activate Shield with a Gumroad license key")
-    p_act.add_argument("key", help="The license key from your Gumroad purchase email")
+    p_act = shield_sub.add_parser("activate", help="Activate Shield with a Lemon Squeezy license key")
+    p_act.add_argument("key", help="The license key from your Lemon Squeezy purchase email")
     p_act.set_defaults(func=cmd_shield_activate)
 
-    p_deact = shield_sub.add_parser("deactivate", help="Stop daemon + remove license key")
+    p_deact = shield_sub.add_parser("deactivate", help="Stop daemon + release seat + remove license key")
     p_deact.set_defaults(func=cmd_shield_deactivate)
 
-    p_lic = shield_sub.add_parser("license", help="Show license status (use --refresh to force a Gumroad check)")
-    p_lic.add_argument("--refresh", action="store_true", help="Bypass the 24h cache and re-verify with Gumroad")
+    p_lic = shield_sub.add_parser("license", help="Show license status (use --refresh to force a Lemon Squeezy check)")
+    p_lic.add_argument("--refresh", action="store_true", help="Bypass the 24h cache and re-verify with Lemon Squeezy")
     p_lic.set_defaults(func=cmd_shield_license)
 
     p_inst = shield_sub.add_parser("install-launchd", help="Install macOS launchd plist for unattended supervision")

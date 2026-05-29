@@ -7,7 +7,7 @@ Public API (stable across the 0.1.x line):
   from ogunscan import OgunScanner, Severity, Finding, ScanResult, format_report
 """
 
-__version__ = "0.1.3"
+__version__ = "0.2.0"
 
 from .engine import OgunScanner
 from .models import Finding, ScanResult, Severity

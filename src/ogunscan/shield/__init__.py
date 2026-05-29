@@ -14,4 +14,4 @@ license gate (`activate` / `deactivate`).
 State + history live at `~/.ogunscan/shield/`.
 """
 
-SHIELD_VERSION = "0.2.0-dev"
+SHIELD_VERSION = "0.2.0"
